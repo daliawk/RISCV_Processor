@@ -1,79 +1,71 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 10/05/2021 09:27:47 AM
-// Design Name: 
-// Module Name: CPU
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
+`include defines.v
+/********************************************************************* 
+* Module: CPU.v 
+* Project: RISV_Processor 
+* Author:   Dalia Elnagar - daliawk@aucegypt.edu
+*           Kareem A. Mohammed Talaat - kareemamr213@aucegypt.edu
+*           Kirolos M. Mikhail - kirolosmorcos237@aucegypt.edu
+* 
+* Description: The top module for the RISC-V processor
+*
+* Change history: 10/25/21 – Modified file to follow code guidelines 
+* 
+**********************************************************************/ 
 
 
-module CPU(input clk, input rst);
-wire [31:0] Read_Address;
+
+module CPU(
+    input clk, 
+    input rst
+);
+
+wire [31:0] inst_read_address;
 wire [31:0] PC_input;
 wire [31:0] inst;
-wire Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite; wire [1:0] ALUOp;
+wire branch, mem_read, mem_to_reg, mem_write, ALU_src, reg_write; 
+wire [1:0] ALUOp;
 wire [31:0] write_data;
 wire [31:0] read_data1, read_data2;
 wire [31:0] gen_out;
-wire [31:0] Shifted_gen_out;
-wire [31:0] ALU_input;
-wire [3:0] ALU_Selection; 
+wire [31:0] shifted_gen_out;
+wire [31:0] ALU_second_input;
+wire [3:0] ALU_selection; 
 wire [31:0] ALU_out;
-wire zFlag, ofFlag;
-wire [31:0] Mem_out;
-wire B_MUX_Sel;
-wire [31:0] B_Add_Out;
+wire Z, V;
+wire [31:0] mem_out;
+wire b_mux_sel;
+wire [31:0] b_add_out;
 wire discard1, discard2;
 wire [31:0] PC_4;
-N_Bit_Register #(32) rg (rst, 1'b1, clk, PC_input,Read_Address);
+N_Bit_Register #(32) rg (rst, 1'b1, clk, PC_input,inst_read_address);
 
-InstMem IM(Read_Address[7:2], inst); 
+InstMem IM(inst_read_address[7:2], inst); 
 
-Control_Unit CU(inst, Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite, ALUOp);
+Control_Unit CU(inst, branch, mem_read, mem_to_reg, mem_write, ALU_src, reg_write, ALUOp);
 
-N_bit_register_file #(32) RF( rst,  clk, inst[19:15], inst[24:20], inst[11:7], write_data, RegWrite, read_data1, read_data2);
+N_bit_register_file #(32) RF( rst,  clk, inst[19:15], inst[24:20], inst[11:7], write_data, reg_write, read_data1, read_data2);
  
 ImmGen IG(gen_out, inst);
 
-nbitsll #(32) SL(
-gen_out,
-Shifted_gen_out);
+nbitsll #(32) SL(gen_out, shifted_gen_out);
 
-n_bit_2x1_Multiplexer  #(32) MUX_RF(read_data2, gen_out, ALUSrc, ALU_input);
+n_bit_2x1_Multiplexer  #(32) MUX_RF(read_data2, gen_out, ALU_src, ALU_second_input);
 
-ALU_Control_Unit ALU_CU(ALUOp, inst, ALU_Selection);
+ALU_Control_Unit ALU_CU(ALUOp, inst, ALU_selection);
 
-n_bit_ALU #(32)ALU(read_data1,ALU_input,ALU_Selection, ALU_out, zFlag, ofFlag);
+n_bit_ALU #(32)ALU(read_data1,ALU_second_input,ALU_selection, ALU_out, Z, V);
 
-DataMem DM( clk, MemRead, MemWrite, ALU_out[7:2], read_data2, Mem_out);
+DataMem DM( clk, mem_read, mem_write, ALU_out[7:2], read_data2, mem_out);
 
-n_bit_2x1_Multiplexer  #(32) MUX_Mem(ALU_out, Mem_out, MemtoReg, write_data);
+n_bit_2x1_Multiplexer  #(32) MUX_Mem(ALU_out, mem_out, mem_to_reg, write_data);
 
-assign B_MUX_Sel = Branch & zFlag;
+assign b_mux_sel = branch & Z;
 
-RCA8 #(32) B_adder(
-Shifted_gen_out,
- Read_Address, 
-1'b0,
- B_Add_Out, discard1
+RCA8 #(32) B_adder(shifted_gen_out, inst_read_address, ZERO, b_add_out, discard1);
 
-);
+RCA8 #(32) PC_adder(32'd4, inst_read_address, 1'b0, PC_4 , discard2);
 
-RCA8 #(32) PC_adder(32'd4, Read_Address, 1'b0, PC_4 , discard2);
-
-n_bit_2x1_Multiplexer  #(32) MUX_PC(PC_4, B_Add_Out, B_MUX_Sel, PC_input);
+n_bit_2x1_Multiplexer  #(32) MUX_PC(PC_4, b_add_out, b_mux_sel, PC_input);
 
 endmodule
