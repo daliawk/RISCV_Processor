@@ -23,7 +23,7 @@ module DFlipFlop (
     
     always @ (posedge clk or posedge rst) 
         if (rst) begin // Reseting the flipflop
-            Q <= ZERO; 
+            Q <= `ZERO; 
         end 
         else begin 
             Q <= D; 

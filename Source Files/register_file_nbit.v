@@ -36,13 +36,13 @@ module  register_file_nbit #(parameter n=32)(
     always@(*) begin
         if(write) begin
             load = ZERO;
-            load[write_reg] = ONE;
+            load[write_reg] = `ONE;
         end
         else
-            load = {32{ZERO}};
+            load = {32{`ZERO}};
             
     end
-        assign Q[0] = {32{ZERO}};
+        assign Q[0] = {32{`ZERO}};
     
     genvar i;
     for(i=1; i<32; i=i+1) begin: loop1
