@@ -1,6 +1,6 @@
 /*******************************************************************
 *
-* Module: addressing_unit.v
+* Module: Addressing_Unit.v
 * Project: Project 1: femtoRV32
 * Author: Kareem A. Mohammed Talaat - kareemamr213@aucegypt.edu
 * Description: A module that allows LB, LH, LW, LBU, LHU, SB, SH, and SW risc-v instructions to work on the 
@@ -12,13 +12,13 @@
 **********************************************************************/
 
 
-module addressing_unit (
+module Addressing_Unit (
     input [31:0] data_in,
     input [1:0] CU_inst_sel,
     input CU_signed_sel,
     output [31:0] data_out
 );
-    always @*) begin
+    always @(*) begin
         case(CU_inst_sel) 
             // LW, SW cases
             2'b00 : data_out = data_in;
