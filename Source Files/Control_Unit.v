@@ -30,50 +30,72 @@ always @(*) begin
     case(IR_opcode) //inst[6:2]
         `OPCODE_LUI :
             begin
-                jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                jump = 0; mem_read = 0; mem_to_reg = 0;
+                ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; 
+                reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
             end
         `OPCODE_AUIPC :
             begin
-                jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                jump = 0; mem_read = 0; mem_to_reg = 0; 
+                ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1;
+                 reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
             end
         `OPCODE_JAL : 
             begin
-                jump = 1; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                jump = 1; mem_read = 0; mem_to_reg = 0; 
+                ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; 
+                reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
             end
         `OPCODE_JALR : 
             begin
-                jump = 1; mem_read = 0; mem_to_reg = 0; ALU_Op /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                jump = 1; mem_read = 0; mem_to_reg = 0;
+                ALU_Op /*change*/; mem_write = 0; ALU_Src = 1;
+                reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
             end
         `OPCODE_Branch : //All branching instructions
             begin
                 case(`IR_funct3) //instruction[14:12]
                     `BR_BEQ : 
                         begin
-                            jump = 1; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b01; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 1; mem_read = 0; mem_to_reg = 0;
+                            ALU_Op = 2'b01; mem_write = 0; ALU_Src = 0;
+                            reg_write = 0; signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     `BR_BNE :
                         begin
-                            jump = 1; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b01; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 1; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = 2'b01; mem_write = 0; ALU_Src = 0; 
+                            reg_write = 0; signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     `BR_BLT :
                         begin
-                            jump = 1; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b01; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 1; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = 2'b01; mem_write = 0; ALU_Src = 0; 
+                            reg_write = 0; signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     `BR_BGE :
                         begin
-                            jump = 1; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b01; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 1; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = 2'b01; mem_write = 0; ALU_Src = 0; 
+                            reg_write = 0; signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     `BR_BLTU :
                         begin
-                            jump = 1; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b01; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                            jump = 1; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = 2'b01; mem_write = 0; ALU_Src = 0; 
+                            reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
                         end
                     `BR_BGEU : 
                         begin
-                            jump = 1; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b01; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                            jump = 1; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = 2'b01; mem_write = 0; ALU_Src = 0; 
+                            reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
                         end
                     default : 
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; 
+                            reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
                         end
                 endcase
             end
@@ -82,26 +104,39 @@ always @(*) begin
                 case(`IR_funct3) //Instruction[14:12]
                     `F3_LB :
                         begin
-                            jump = 0; mem_read = 1; mem_to_reg = 1; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b10;
+                            jump = 0; mem_read = 1; mem_to_reg = 1; 
+                            ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1; 
+                            reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b10;
                         end
                     `F3_LH : 
                         begin
-                            jump = 0; mem_read = 1; mem_to_reg = 1; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b01;                    end
+                            jump = 0; mem_read = 1; mem_to_reg = 1; 
+                            ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1; 
+                            reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b01;                    
+                        end
                     `F3_LW :
                         begin
-                            jump = 0; mem_read = 1; mem_to_reg = 1; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1; reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 1; mem_to_reg = 1; 
+                            ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1; 
+                            reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     `F3_LBU: 
                         begin
-                            jump = 0; mem_read = 1; mem_to_reg = 1; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1; reg_write = 1;  signed_inst = 0; AU_inst_sel = 2'b10;
+                            jump = 0; mem_read = 1; mem_to_reg = 1; 
+                            ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1; 
+                            reg_write = 1;  signed_inst = 0; AU_inst_sel = 2'b10;
                         end
                     `F3_LHU :
                         begin
-                            jump = 0; mem_read = 1; mem_to_reg = 1; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1; reg_write = 1;  signed_inst = 0; AU_inst_sel = 2'b01;
+                            jump = 0; mem_read = 1; mem_to_reg = 1; 
+                            ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1; 
+                            reg_write = 1;  signed_inst = 0; AU_inst_sel = 2'b01;
                         end
                     default : 
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; 
+                            reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
                         end
                 endcase
             end
@@ -110,19 +145,27 @@ always @(*) begin
                 case(`IR_funct3) //Instruction[14:12]
                     `F3_SB : 
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b00; mem_write = 1; ALU_Src = 1; reg_write = 0;  signed_inst = 1; AU_inst_sel = 2'b10;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = 2'b00; mem_write = 1; ALU_Src = 1; 
+                            reg_write = 0;  signed_inst = 1; AU_inst_sel = 2'b10;
                         end
                     `F3_SH : 
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b00; mem_write = 1; ALU_Src = 1; reg_write = 0;  signed_inst = 1; AU_inst_sel = 2'b01;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = 2'b00; mem_write = 1; ALU_Src = 1; 
+                            reg_write = 0;  signed_inst = 1; AU_inst_sel = 2'b01;
                         end
                     `F3_SW :
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b00; mem_write = 1; ALU_Src = 1; reg_write = 0;  signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = 2'b00; mem_write = 1; ALU_Src = 1; 
+                            reg_write = 0;  signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     default : 
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; 
+                            reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
                         end
                 endcase
             end
@@ -131,52 +174,74 @@ always @(*) begin
                 case(`IR_funct3) //Instruction[14:12]
                     `F3_ADDI :
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; 
+                            reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     `F3_SLTI :
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; 
+                            reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     `F3_SLTIU : 
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; 
+                            reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     `F3_XORI : 
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; 
+                            reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     `F3_ORI :
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; 
+                            reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     `F3_ANDI : 
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; 
+                            reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     `F3_SLLI :
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; 
+                            reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
                         end
                     `F3_SRAI_SRLI : //Function 3 for SRAI and SRLI is the same
                         begin
                             case (`IR_funct7)) //Instruction [31:25]
                                 `F7_SRAI :
                                     begin
-                                        jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
+                                        jump = 0; mem_read = 0; mem_to_reg = 0; 
+                                        ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; 
+                                        reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
                                     end 
                                 `F7_SRLI :
                                     begin
-                                        jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
+                                        jump = 0; mem_read = 0; mem_to_reg = 0; 
+                                        ALU_Op = /*change*/; mem_write = 0; ALU_Src = 1; 
+                                        reg_write = 1;  signed_inst = 1; AU_inst_sel = 2'b00;
                                     end
                                 default : 
                                     begin
-                                    jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                                    jump = 0; mem_read = 0; mem_to_reg = 0; 
+                                    ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; 
+                                    reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
                                     end
                             endcase
                         end
                     default : 
                         begin
-                            jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                            jump = 0; mem_read = 0; mem_to_reg = 0; 
+                            ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0;
+                            reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
                         end    
                 endcase
             end
@@ -188,68 +253,96 @@ always @(*) begin
                         case (`IR_funct7) //Instruction [31:25]
                             `F7_ADD :
                                 begin
-                                    jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                                    jump = 0; mem_read = 0; mem_to_reg = 0; 
+                                    ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; 
+                                    reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
                                 end 
                             `F7_SUB :
                                 begin
-                                    jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                                    jump = 0; mem_read = 0; mem_to_reg = 0; 
+                                    ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; 
+                                    reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
                                 end
                             default : 
                                 begin
-                                    jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                                    jump = 0; mem_read = 0; mem_to_reg = 0; 
+                                    ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; 
+                                    reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
                                 end      
                         endcase
                     end
                 `F3_SLL :
                     begin
-                        jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                        jump = 0; mem_read = 0; mem_to_reg = 0; 
+                        ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; 
+                        reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
                     end 
                 `F3_SLT :
                     begin
-                        jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                        jump = 0; mem_read = 0; mem_to_reg = 0; 
+                        ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; 
+                        reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
                     end
                 `F3_SLTU :
                     begin
-                        jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; reg_write = 1; signed_inst = 0; AU_inst_sel = 2'b00;
+                        jump = 0; mem_read = 0; mem_to_reg = 0; 
+                        ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; 
+                        reg_write = 1; signed_inst = 0; AU_inst_sel = 2'b00;
                     end
                 `F3_XOR :
                     begin
-                        jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                        jump = 0; mem_read = 0; mem_to_reg = 0; 
+                        ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; 
+                        reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
                     end
                 `F3_SRL_SRA : //Function 3 of SRL and SRA instructions is the same
                     begin
                         case (`IR_funct7) //Instuction[31:25]
                             F7_SRL : 
                                 begin
-                                    jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                                    jump = 0; mem_read = 0; mem_to_reg = 0; 
+                                    ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; 
+                                    reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
                                 end
                             F7_SRA : 
                                 begin
-                                    jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                                    jump = 0; mem_read = 0; mem_to_reg = 0; 
+                                    ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; 
+                                    reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
                                 end
                             default : 
                                 begin
-                                    jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                                    jump = 0; mem_read = 0; mem_to_reg = 0; 
+                                    ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; 
+                                    reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
                                 end
                         endcase
                     end
                 `F3_OR :
                     begin
-                        jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                        jump = 0; mem_read = 0; mem_to_reg = 0; 
+                        ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; 
+                        reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
                     end
                 `F3_AND :
                     begin
-                        jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
+                        jump = 0; mem_read = 0; mem_to_reg = 0; 
+                        ALU_Op = /*change*/; mem_write = 0; ALU_Src = 0; 
+                        reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
                     end
                 default : 
                     begin
-                        jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                        jump = 0; mem_read = 0; mem_to_reg = 0; 
+                        ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; 
+                        reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
                     end
                 endcase
             end
         default : 
             begin
-                jump = 0; mem_read = 0; mem_to_reg = 0; ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                jump = 0; mem_read = 0; mem_to_reg = 0; 
+                ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; 
+                reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
             end
     endcase
 end
