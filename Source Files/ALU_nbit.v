@@ -73,5 +73,7 @@ output S
     ////////////////////// prone to error due to using ALUOUT
     assign V = (A[n-1] != B[n-1])? 1'b0:(A[n-1] == ALUout[n-1])? 1'b0: 1'b1;
     
+    assign S = ALUout[n-1];
+    
 endmodule
 
