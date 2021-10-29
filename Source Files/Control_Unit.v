@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-/******************************************************************* * 
+/********************************************************************* 
 * Module:   Control_Unit.v 
 * Project:  RISCV_PROCESSOR 
 * Author:   Dalia Elnagar - daliawk@aucegypt.edu
