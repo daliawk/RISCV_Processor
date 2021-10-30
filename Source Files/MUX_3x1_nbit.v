@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
-`include "C:\Users\Kirolos Mikhail\Downloads\RISCV_Processor-main\RISCV_Processor-main\Defines\defines.v"
-/******************************************************************* * 
+`include "C:\Users\Kirolos Mikhail\Github\RISCV_Processor\Source Files\defines.v"
+/********************************************************************* 
 * Module:   three_Input_Mux.v 
 * Project:  RISCV_PROCESSOR 
 * Author:   Dalia Elnagar - daliawk@aucegypt.edu
@@ -24,7 +24,6 @@ input  [n-1:0] b,
 input  [n-1:0] c,
 output reg [n-1:0] out
 );
-
     always@(*)
         begin
         case(sel)

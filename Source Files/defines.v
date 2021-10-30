@@ -1,3 +1,6 @@
+`define     ZERO            1'b0
+`define     ONE             1'b1
+
 `define     IR_rs1          19:15
 `define     IR_rs2          24:20
 `define     IR_rd           11:7
@@ -80,6 +83,7 @@
 `define     ALU_SLL         4'b10_01
 `define     ALU_SLT         4'b11_01
 `define     ALU_SLTU        4'b11_11
+`define     ALU_UI         4'b01_10
 
 `define     SYS_EC_EB       3'b000
 

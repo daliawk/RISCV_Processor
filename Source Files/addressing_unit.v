@@ -10,13 +10,14 @@
 *
 *
 **********************************************************************/
+`include "C:\Users\Kirolos Mikhail\Github\RISCV_Processor\Source Files\defines.v"
 
 
 module Addressing_Unit (
     input [31:0] data_in,
     input [1:0] AU_inst_sel,
     input signed_inst,
-    output [31:0] data_out
+    output reg [31:0] data_out
 );
     always @(*) begin
         case(AU_inst_sel) 
@@ -29,7 +30,7 @@ module Addressing_Unit (
                     // LHU case (unsigned)
                     1'b0 : data_out = {16'b0, data_in[15:0]};
                     // LH, SH cases (signed)
-                    1'b1 : data_out = &signed(data_in[15:0]);
+                    1'b1 : data_out = {{16{data_in[15]}},data_in[15:0]};
                     // Default case if there is an error
                     default : data_out = 32'b0;
                 endcase
@@ -41,9 +42,10 @@ module Addressing_Unit (
                     // LBU case (unsigned)
                     1'b0 : data_out = {24'b0, data_in[7:0]};
                     // LB, SB cases (signed)
-                    1'b1 : data_out = &signed(data_in[7:0]);
+                    1'b1 : data_out = {{24{data_in[7]}},data_in[7:0]};
                     // Default case if there is an error
                     default : data_out = 32'b0;
+                endcase
             end
             // Default case if there is an error
             default : data_out = 32'b0;

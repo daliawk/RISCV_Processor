@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-`include "defines.v"
+`include "C:\Users\Kirolos Mikhail\Github\RISCV_Processor\Source Files\defines.v"
 /*******************************************************************
 *
 * Module: register_file_nbit.v
@@ -35,7 +35,7 @@ module  register_file_nbit #(parameter n=32)(
     //Writing to 32 registers
     always@(*) begin
         if(write) begin
-            load = ZERO;
+            load = `ZERO;
             load[write_reg] = `ONE;
         end
         else
