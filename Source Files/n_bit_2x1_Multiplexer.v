@@ -20,7 +20,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module n_bit_2x1_Multiplexer  #(parameter n = 8)(input [n-1:0] A, input [n-1:0] B, input s, output [n-1:0] out);
+module n_bit_2x1_Multiplexer  #(parameter n = 8)(
+input [n-1:0] A, 
+input [n-1:0] B, 
+input s, 
+output [n-1:0] out);
 
 genvar i;
 

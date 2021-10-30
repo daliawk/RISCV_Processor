@@ -50,7 +50,7 @@ N_bit_register_file #(32) RF( rst,  clk, inst[19:15], inst[24:20], inst[11:7], w
  
 ImmGen IG(gen_out, inst);
 
-nbitsll #(32) SL(
+SLL_nbit #(32) SL(
 gen_out,
 Shifted_gen_out);
 
@@ -58,7 +58,7 @@ n_bit_2x1_Multiplexer  #(32) MUX_RF(read_data2, gen_out, ALUSrc, ALU_input);
 
 ALU_Control_Unit ALU_CU(ALUOp, inst, ALU_Selection);
 
-n_bit_ALU #(32)ALU(read_data1,ALU_input,ALU_Selection, ALU_out, zFlag, ofFlag);
+ALU_nbit #(32)ALU(read_data1,ALU_input,ALU_Selection, ALU_out, zFlag, ofFlag);
 
 DataMem DM( clk, MemRead, MemWrite, ALU_out[7:2], read_data2, Mem_out);
 
@@ -66,7 +66,7 @@ n_bit_2x1_Multiplexer  #(32) MUX_Mem(ALU_out, Mem_out, MemtoReg, write_data);
 
 assign B_MUX_Sel = Branch & zFlag;
 
-RCA8 #(32) B_adder(
+Ripple_Carry_Adder_nbit #(32) B_adder(
 Shifted_gen_out,
  Read_Address, 
 1'b0,
@@ -74,7 +74,7 @@ Shifted_gen_out,
 
 );
 
-RCA8 #(32) PC_adder(32'd4, Read_Address, 1'b0, PC_4 , discard2);
+Ripple_Carry_Adder_nbit #(32) PC_adder(32'd4, Read_Address, 1'b0, PC_4 , discard2);
 
 n_bit_2x1_Multiplexer  #(32) MUX_PC(PC_4, B_Add_Out, B_MUX_Sel, PC_input);
 
@@ -110,6 +110,6 @@ default: num = 0;
 endcase
 end
 
-BCD bcd1(clkSSD, num,Anode,LED_out);
+Seven_Segment_Display bcd1(clkSSD, num,Anode,LED_out);
 
 endmodule
