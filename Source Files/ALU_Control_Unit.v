@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-`include defines.v
+`include "C:\Users\Kirolos Mikhail\Downloads\RISCV_Processor-main\RISCV_Processor-main\Defines\defines.v"
 /********************************************************************* 
 * Module: ALU_Control_Unit.v 
 * Project: RISV_Processor 
@@ -54,6 +54,9 @@ output reg [3:0] ALU_selection
                     ALU_selection = `ALU_OR;
                 3'b111:
                     ALU_selection = `ALU_AND;
+                default:
+                    ALU_selection = 4'b0000;
+        endcase
         end
     
     2'b01: // all branch and jal statements

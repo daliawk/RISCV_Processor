@@ -40,13 +40,14 @@ wire [31:0] B_Add_Out;
 wire discard1, discard2;
 wire [31:0] PC_4;
 reg [12:0] num;
-N_Bit_Register #(32) rg (rst, 1'b1, clk, PC_input,Read_Address);
+
+register_nbit #(32) rg (rst, 1'b1, clk, PC_input,Read_Address);
 
 InstMem IM(Read_Address[7:2], inst); 
 
 Control_Unit CU(inst, Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite, ALUOp);
 
-N_bit_register_file #(32) RF( rst,  clk, inst[19:15], inst[24:20], inst[11:7], write_data, RegWrite, read_data1, read_data2);
+register_file_nbit #(32) RF( rst,  clk, inst[19:15], inst[24:20], inst[11:7], write_data, RegWrite, read_data1, read_data2);
  
 ImmGen IG(gen_out, inst);
 
