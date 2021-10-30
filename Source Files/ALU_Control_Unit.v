@@ -24,66 +24,87 @@ output reg [3:0] ALU_selection
     always @(*)
     begin
     case(ALUOp)
-    2'b00: 
+
+    2'b00: // ALL I and S format istructions
         begin
-            ALU_selection = 4'b0010;
+            case(inst[14:12])
+                3'b000:
+                    ALU_selection = `ALU_ADD;
+                3'b001:
+                    ALU_selection = `ALU_ADD;
+                3'b010:
+                begin
+                    if(inst[5:4]==2'b01)
+                        ALU_selection = `ALU_SLT;
+                    else
+                        ALU_selection = `ALU_ADD;
+                end
+                3'b011:
+                    ALU_selection = `ALU_SLTU;
+                3'b100:
+                begin
+                    if(inst[5:4]==2'b00)
+                        ALU_selection = `ALU_ADD;
+                    else
+                        ALU_selection = `ALU_XOR;
+                end
+                3'b101:
+                    ALU_selection = `ALU_ADD;
+                3'b110:
+                    ALU_selection = `ALU_OR;
+                3'b111:
+                    ALU_selection = `ALU_AND;
         end
-    2'b01: 
+    
+    2'b01: // all branch and jal statements
         begin
-            ALU_selection = ALU_SUB;
+            ALU_selection = `ALU_SUB;
         end   
-    2'b10:
+    
+    2'b10: // R-format functions
         begin
         case(inst[14:12])
 
             3'b000:
             begin
                 if(inst[30] == 1)
-                    ALU_selection = ALU_SUB;
+                    ALU_selection = `ALU_SUB;
                 else if(inst[30] == 0)
-                    ALU_selection = ALU_ADD;
+                    ALU_selection = `ALU_ADD;
             end
 
             3'b001:
-            begin
-                ALU_selection = ALU_SLL;
-            end
+                ALU_selection = `ALU_SLL;
 
             3'b010:
-            begin
-                ALU_selection = ALU_SLT;
-            end
+                ALU_selection = `ALU_SLT;
 
             3'b011:
-            begin
-                ALU_selection = ALU_SLTU;
-            end
+                ALU_selection = `ALU_SLTU;
 
             3'b100:
-            begin
-                ALU_selection = ALU_XOR;
-            end
+                ALU_selection = `ALU_XOR;
 
             3'b101:
             begin
                 if (inst[30])
-                    ALU_selection = ALU_SRA;
+                    ALU_selection = `ALU_SRA;
                 else
-                    ALU_selection = ALU_SRL;
+                    ALU_selection = `ALU_SRL;
             end
 
             3'b110:
-            begin
-                ALU_selection = ALU_OR;
-            end
+                ALU_selection = `ALU_OR;
 
             3'b111: 
-            begin
-                ALU_selection = ALU_AND;
-            end
+                ALU_selection = `ALU_AND;
         endcase     
         end
-    default: ALU_selection = ALU_PASS;
+
+    2'b11: // LUI and AUIPC
+    ////////////////////////////////// add to defines file
+        ALU_selection = `ALU_UI;
+    default: ALU_selection = `ALU_PASS;
     endcase          
     end
 

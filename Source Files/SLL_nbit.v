@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-/******************************************************************* * 
+/********************************************************************* 
 * Module:   SLL_nbit.v 
 * Project:  RISCV_PROCESSOR 
 * Author:   Dalia Elnagar - daliawk@aucegypt.edu
@@ -17,6 +17,6 @@ module SLL_nbit #(parameter n = 8)(
 input [n-1:0] a,
 output [n-1:0] b);
 
-    assign b = {a[n-2:0],1'b0};
+    assign b = {a[n-2:0],`ZERO};
 
 endmodule
