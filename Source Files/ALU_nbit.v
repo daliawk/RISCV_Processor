@@ -1,6 +1,6 @@
 
 `timescale 1ns / 1ps
-`include defines.v
+`include "C:\Users\Kirolos Mikhail\Downloads\RISCV_Processor-main\RISCV_Processor-main\Defines\defines.v"
 /********************************************************************* 
 * Module: ALU_nbit.v 
 * Project: RISV_Processor 
@@ -23,17 +23,18 @@ output reg [n-1:0] ALUout,
 output Z,
 output V,
 ////////prone to error C is inside always block what happens if not add or sub
-output reg C,
+output C,
 output S
 );
     wire [n-1:0] summed;
     wire [n-1:0] subbed;
     wire [n-1:0] modedB;
-
-    n_bit_2x1_Multiplexer #(n) addsub ( B, ~B,sel[0], modedB);
-    RCA8 #(n) addersubber  (A, modedB, sel[0],summed,C);
+    wire cout;
+    n_bit_2x1_Multiplexer #(n) addsub ( B, ~B,alu_control[0], modedB);
+    Ripple_Carry_Adder_nbit #(n) addersubber  (A, modedB, alu_control[0],summed,cout);
     assign subbed = summed;
-
+    assign C = cout;
+    
     always@(*)
     begin
         //choosing output
@@ -56,25 +57,24 @@ output S
             `ALU_SLL: // shifting left
                 ALUout = {A[n-2:0],1'b0};
             `ALU_SLT: // setting on less than unsigned 
-            begin
-                if(A[n-1]!B[n-1]) 
-                    ALUout = {31'b0,1;b0};
-                else
-                    ALUout = 32'b0;
-                else if (A<B)
-                    ALUout = {31'b0,1;b0};
+            begin 
+                if(A[n-1]!=B[n-1])
+                    ALUout = {31'b0,1'b0};
+                else 
+                if (A<B)
+                    ALUout = {31'b0,1'b0};
                 else
                     ALUout = 32'b0;
             end
             `ALU_SLTU: // set on less than unsigned  
             begin
                 if(A<B)
-                    ALUout = {31'b0,1;b0}
+                    ALUout = {31'b0,1'b0};
                 else
                     ALUout = 32'b0;
             end
             `ALU_PASS: // pass A as it is
-                ALUout = A
+                ALUout = A;
             default:  // default case gives out zeros
                 ALUout = 0;
         endcase

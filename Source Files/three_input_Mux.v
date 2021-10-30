@@ -1,4 +1,5 @@
 `timescale 1ns / 1ps
+`include "C:\Users\Kirolos Mikhail\Downloads\RISCV_Processor-main\RISCV_Processor-main\Defines\defines.v"
 /******************************************************************* * 
 * Module:   three_Input_Mux.v 
 * Project:  RISCV_PROCESSOR 
@@ -34,7 +35,7 @@ output reg [n-1:0] out
             2'b10:
                 out = c;
             default:
-                out = 0;
+                out = `ZERO;
         endcase
         end
 

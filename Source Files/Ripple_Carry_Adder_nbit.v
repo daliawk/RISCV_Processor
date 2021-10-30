@@ -30,7 +30,7 @@ output Cout);
     // by calling the one-bit adder function
     genvar i;
     for (i=0; i<n; i=i+1) begin: loop
-        adder u1 (c[i],A[i],B[i],c[i+1],S[i]);
+        FA_1bit u1 (c[i],A[i],B[i],c[i+1],S[i]);
     end
 
     // assignment of last carry bit to the carry out
