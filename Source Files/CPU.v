@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-`include defines.v
+`include "C:\Users\Kirolos Mikhail\Downloads\RISCV_Processor-main\RISCV_Processor-main\Defines\defines.v"
 /********************************************************************* 
 * Module: CPU.v 
 * Project: RISV_Processor 
@@ -38,13 +38,13 @@ wire b_mux_sel;
 wire [31:0] b_add_out;
 wire discard1, discard2;
 wire [31:0] PC_4;
-N_Bit_Register #(32) rg (rst, 1'b1, clk, PC_input,inst_read_address);
+register_nbit #(32) rg (rst, 1'b1, clk, PC_input,inst_read_address);
 
 InstMem IM(inst_read_address[7:2], inst); 
 
 Control_Unit CU(inst, branch, mem_read, mem_to_reg, mem_write, ALU_src, reg_write, ALUOp);
 
-N_bit_register_file #(32) RF( rst,  clk, inst[19:15], inst[24:20], inst[11:7], write_data, reg_write, read_data1, read_data2);
+register_file_nbit #(32) RF( rst,  clk, inst[19:15], inst[24:20], inst[11:7], write_data, reg_write, read_data1, read_data2);
  
 ImmGen IG(gen_out, inst);
 
