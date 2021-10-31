@@ -69,12 +69,11 @@ module CPU(
 //wire [31:0] mem_mux_input;
 //wire [31:0] branch_mux_output;
 
-//assign PC_input = (rst==1)?0:PC_input;
 register_nbit #(32) PC (.rst(rst), .load(PC_en), .clk(clk), .D(PC_input),.Q(inst_read_address));
 
 InstMem IM(.addr(inst_read_address[7:2]), .data_out(inst)); 
 
-Control_Unit CU(.inst(inst), .PC_en(PC_en), .branch(branch), .jump(jump), .mem_read(mem_read), .mem_to_reg(mem_to_reg), .mem_write(mem_write), .ALU_Src(ALU_src), .reg_write(reg_write), .signed_inst(signed_inst), .AU_inst_sel(AU_inst_sel), .ALU_Op(ALUOp), .RF_MUX_sel(RF_MUX_sel));
+Control_Unit CU(.rst(rst), .inst(inst), .PC_en(PC_en), .branch(branch), .jump(jump), .mem_read(mem_read), .mem_to_reg(mem_to_reg), .mem_write(mem_write), .ALU_Src(ALU_src), .reg_write(reg_write), .signed_inst(signed_inst), .AU_inst_sel(AU_inst_sel), .ALU_Op(ALUOp), .RF_MUX_sel(RF_MUX_sel));
 
 three_input_Mux_nbit RF_MUX(.a(mem_MUX_out), .b(b_add_out), .c(PC_4), .out(write_data), .sel(RF_MUX_sel));
 
@@ -102,7 +101,7 @@ MUX_2x1_nbit  #(32) MUX_Mem(.a(ALU_out), .b(mem_mux_input), .sel(mem_to_reg), .o
 
 Ripple_Carry_Adder_nbit #(32) B_adder(.A(shifted_gen_out), .B(inst_read_address), .Cin(`ZERO), .S(b_add_out), .Cout(discard1));
 
-Ripple_Carry_Adder_nbit #(32) PC_adder(.A(inst_read_address), .B(32'd4), .Cin(0), .S(PC_4) , .Cout(discard2));
+Ripple_Carry_Adder_nbit #(32) PC_adder(.A(4), .B(inst_read_address), .Cin(`ZERO), .S(PC_4) , .Cout(discard2));
 
 MUX_2x1_nbit  #(32) MUX_branch(.a(PC_4), .b(b_add_out), .sel(branch_decision), .out(branch_mux_output));
 MUX_2x1_nbit  #(32) MUX_PC(.a(branch_mux_output), .b(ALU_out), .sel(jump), .out(PC_input));

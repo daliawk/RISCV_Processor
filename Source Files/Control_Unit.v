@@ -15,6 +15,7 @@
 
 
 module Control_Unit(
+    input rst,
     input [31:0] inst, 
     output reg PC_en,
     output reg branch,
@@ -30,6 +31,13 @@ module Control_Unit(
     output reg [1:0] ALU_Op);
 
 always @(*) begin
+    if(rst) begin
+        branch = 0; jump = 0; mem_read = 0; mem_to_reg = 0;
+        ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; 
+        reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+        RF_MUX_sel = 2'b00; PC_en = 1'b0;
+    end
+    else
     case(inst[6:2]) //inst[6:2]
         `OPCODE_SYSTEM:
             begin

@@ -48,7 +48,7 @@ wire [31:0] mem_write_data;
 wire [31:0] mem_mux_input;
 wire [31:0] branch_mux_output;
     CPU cpu(clk,rst, inst_read_address, PC_input, inst,
- jump, branch, mem_read, mem_to_reg, mem_write, ALU_src, reg_write, signed_inst,  PC_e,
+ jump, branch, mem_read, mem_to_reg, mem_write, ALU_src, reg_write, signed_inst,  PC_en,
  RF_MUX_sel,
 mem_MUX_out,
 AU_inst_sel,
