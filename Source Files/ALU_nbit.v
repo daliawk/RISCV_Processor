@@ -1,6 +1,6 @@
 
 `timescale 1ns / 1ps
-`include "C:\Users\Kirolos Mikhail\Github\RISCV_Processor\Source Files\defines.v"
+`include "defines.v"
 /********************************************************************* 
 * Module: ALU_nbit.v 
 * Project: RISV_Processor 
@@ -30,7 +30,7 @@ output S
     wire [n-1:0] subbed;
     wire [n-1:0] modedB;
     wire cout;
-    n_bit_2x1_Multiplexer #(n) addsub ( B, ~B,alu_control[0], modedB);
+    MUX_2x1_nbit #(n) addsub ( B, ~B,alu_control[0], modedB);
     Ripple_Carry_Adder_nbit #(n) addersubber  (A, modedB, alu_control[0],summed,cout);
     assign subbed = summed;
     assign C = cout;

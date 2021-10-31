@@ -10,7 +10,7 @@
 *
 *
 **********************************************************************/
-`include "C:\Users\Kirolos Mikhail\Github\RISCV_Processor\Source Files\defines.v"
+`include "defines.v"
 
 
 module Addressing_Unit (

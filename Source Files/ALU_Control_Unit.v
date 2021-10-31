@@ -1,5 +1,5 @@
 `timescale 1ns / 1ps
-`include "C:\Users\Kirolos Mikhail\Github\RISCV_Processor\Source Files\defines.v"
+`include "defines.v"
 /********************************************************************* 
 * Module: ALU_Control_Unit.v 
 * Project: RISV_Processor 

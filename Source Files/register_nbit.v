@@ -26,7 +26,7 @@ module register_nbit #(parameter n = 32) (
     
     genvar i;
     for(i=0; i<n; i=i+1) begin: loop
-        MUX mux (.A(Q[i]), .B(D[i]), .S(load), .C(ff_in[i]));
+        MUX_2x1_1bit mux (.a(Q[i]), .b(D[i]), .sel(load), .out(ff_in[i]));
         DFlipFlop dff (.clk(clk), .rst(rst), .D(ff_in[i]), .Q(Q[i])); 
     end
     

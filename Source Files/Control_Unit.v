@@ -9,13 +9,14 @@
 *
 *
 **********************************************************************/
-`include "C:\Users\Kirolos Mikhail\Github\RISCV_Processor\Source Files\defines.v"
+`include "defines.v"
 
 
 
 
 module Control_Unit(
     input [31:0] inst, 
+    output reg PC_en,
     output reg branch,
     output reg jump, 
     output reg mem_read, 
@@ -30,36 +31,51 @@ module Control_Unit(
 
 always @(*) begin
     case(inst[6:2]) //inst[6:2]
+        `OPCODE_SYSTEM:
+            begin
+                branch = 0; jump = 0; mem_read = 0; mem_to_reg = 0;
+                ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; 
+                reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                RF_MUX_sel = 2'b00; PC_en = 1'b0;
+            end
+        `OPCODE_FENCE:
+            begin
+                branch = 0; jump = 0; mem_read = 0; mem_to_reg = 0;
+                ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; 
+                reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
+                RF_MUX_sel = 2'b00; PC_en = 1'b0;
+            end
         `OPCODE_LUI :
             begin
                 branch = 0; jump = 0; mem_read = 0; mem_to_reg = 0;
                 ALU_Op = 2'b11; mem_write = 0; ALU_Src = 1; 
                 reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
-                RF_MUX_sel = 2'b00;
+                RF_MUX_sel = 2'b00; PC_en = 1'b1;
             end
         `OPCODE_AUIPC :
             begin
                 branch = 0; jump = 0; mem_read = 0; mem_to_reg = 0; 
                 ALU_Op = 2'b11; mem_write = 0; ALU_Src = 1;
                 reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
-                RF_MUX_sel = 2'b01;
+                RF_MUX_sel = 2'b01; PC_en = 1'b1;
             end
         `OPCODE_JAL : 
             begin
                 branch = 0; jump = 1; mem_read = 0; mem_to_reg = 0; 
                 ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1; 
                 reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
-                RF_MUX_sel = 2'b10;
+                RF_MUX_sel = 2'b10; PC_en = 1'b1;
             end
         `OPCODE_JALR : 
             begin
                 branch = 0; jump = 1; mem_read = 0; mem_to_reg = 0;
                 ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1;
                 reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
-                RF_MUX_sel = 2'b10;
+                RF_MUX_sel = 2'b10; PC_en = 1'b1;
             end
         `OPCODE_Branch : //All branching instructions
             begin
+                PC_en = 1'b1;
                 case(inst[14:12]) //funct3
                     `BR_BEQ : 
                         begin
@@ -114,6 +130,7 @@ always @(*) begin
             end
         `OPCODE_Load : //All load instructions
             begin
+                PC_en = 1'b1;
                 case(inst[14:12]) //Instruction[14:12]
                     `F3_LB :
                         begin
@@ -161,6 +178,7 @@ always @(*) begin
             end
         `OPCODE_Store : //All storing instructions
             begin
+                PC_en = 1'b1;
                 case(inst[14:12]) //Instruction[14:12]
                     `F3_SB : 
                         begin
@@ -194,6 +212,7 @@ always @(*) begin
             end
         `OPCODE_Arith_I : //All I-type instructions
             begin
+                PC_en = 1'b1;
                 case(inst[14:12]) //Instruction[14:12]
                     `F3_ADDI :
                         begin
@@ -281,6 +300,7 @@ always @(*) begin
             end
         `OPCODE_Arith_R : //All R-Type instructions
             begin
+                PC_en = 1'b1;
                 case(inst[14:12]) //Instruction [14:12]
                 `F3_ADD_SUB : //Function 3 of add and sub instructions is the same
                     begin
@@ -390,7 +410,7 @@ always @(*) begin
                 branch = 0; jump = 0; mem_read = 0; mem_to_reg = 0; 
                 ALU_Op = 2'b00; mem_write = 0; ALU_Src = 0; 
                 reg_write = 0; signed_inst = 0; AU_inst_sel = 2'b00;
-                RF_MUX_sel = 2'b00;
+                RF_MUX_sel = 2'b00; PC_en = 1'b0;
             end
     endcase
 end

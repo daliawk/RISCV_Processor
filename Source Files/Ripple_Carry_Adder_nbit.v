@@ -19,21 +19,13 @@ input  [n-1:0] A,
 input  [n-1:0] B,
 input   Cin,
 output [n-1:0] S,
-output Cout);
-
-    wire c[n:0] ;
-
-    // assignment of first carry bit to carry in
-    assign c[0] = Cin;
-
-    // adding all bits sequentially in a for loop
-    // by calling the one-bit adder function
-    genvar i;
-    for (i=0; i<n; i=i+1) begin: loop
-        FA_1bit u1 (c[i],A[i],B[i],c[i+1],S[i]);
-    end
-
-    // assignment of last carry bit to the carry out
-    assign Cout = c[n];
-
+output Cout
+);
+wire c[n:0] ;
+assign c[0] = Cin;
+genvar i;
+for (i=0; i<n; i=i+1) begin: loop
+    adder u1 (c[i],A[i],B[i],c[i+1],S[i]);
+  end
+assign Cout = c[n];
 endmodule

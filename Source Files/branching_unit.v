@@ -12,7 +12,7 @@
 **********************************************************************/
 
 `timescale 1ns/1ns
-`include "C:\Users\Kirolos Mikhail\Github\RISCV_Processor\Source Files\defines.v"
+`include "defines.v"
 
 module branching_unit(
   input B,            //Branching signal from Control Unit

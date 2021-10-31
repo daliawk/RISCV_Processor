@@ -12,7 +12,7 @@
 **********************************************************************/
 
 
-module MUX_2x1_nbit  #(parameter N = 8)(
+module MUX_2x1_nbit  #(parameter N = 32)(
 	input [N-1:0] a, 
 	input [N-1:0] b, 
 	input sel, 

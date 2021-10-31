@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
     /********************************************************************* 
 * Module: FA_1bit.v 
 * Project: RISV_Processor 
@@ -10,7 +11,7 @@
 * Change history: 10/25/21 – Modified file to follow code guidelines 
 * 
 **********************************************************************/ 
-module FA_1bit(
+module adder(
     input cin,
     input a,
     input b,
