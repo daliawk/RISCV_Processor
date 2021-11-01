@@ -51,11 +51,11 @@ output S
             `ALU_XOR: // xoring
                 ALUout = A^B;
             `ALU_SRL: // shifting right logically
-                ALUout = {1'b0,A[n-1:1]};
+                ALUout = A>>B;
             `ALU_SRA: // shifting right arithmetically
-                ALUout = {A[n-1],A[n-1:1]};
+                ALUout = $signed(A)>>>B;
             `ALU_SLL: // shifting left
-                ALUout = {A[n-2:0],1'b0};
+                ALUout = A<<B;
             `ALU_SLT: // setting on less than unsigned 
             begin 
                 if(A[n-1]!=B[n-1])
