@@ -23,7 +23,7 @@ module MUX_2x1_1bit(
     wire b_o;
     
     assign a_o = a & (~sel); //out = input1 when select is 0
-    assign b_o = a & sel; //out = input2 when select is 1
+    assign b_o = b & sel; //out = input2 when select is 1
     assign out = a_o | b_o; 
 
 endmodule
