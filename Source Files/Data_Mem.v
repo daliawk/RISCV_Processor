@@ -21,7 +21,7 @@ module Data_Mem(
     input [31:0] data_in, 
     output reg [31:0] data_out
     );
-    reg [31:0] mem [0:63]; //Memory that has 64 slots, each slot 32 bits in width.
+    reg [3:0] mem [0:63]; //Memory that has 64 slots, each slot 4 bits in width.
 
     initial //Initial values for testbench testing.
         begin
@@ -37,9 +37,9 @@ module Data_Mem(
         if (mem_write == 1)
             case(AU_inst_sel) 
                 // SW case
-                2'b00 : {mem[addr], mem[addr+1], mem[addr+2], mem[addr+3]} = data_in;
+                2'b00 : {mem[addr+3], mem[addr+2], mem[addr+1], mem[addr]} = data_in;
                 // SH case
-                2'b01 : {mem[addr], mem[addr+1]} = data_in[15:0];
+                2'b01 : { mem[addr+1], mem[addr] } = data_in[15:0];
                 // SB case
                 2'b10 : mem[addr] = data_in[7:0];
                 // Default case if there is an error
@@ -55,27 +55,27 @@ module Data_Mem(
         if (mem_read == 1)
                 case(AU_inst_sel) 
                     // LW case
-                    2'b00 : data_out = {mem[addr], mem[addr+1], mem[addr+2], mem[addr+3]};
+                    2'b00 : data_out = {mem[addr+3], mem[addr+2], mem[addr+1], mem[addr]};
                     // LH, LHU cases
                     2'b01 : 
                     begin
                         case(signed_inst)
                             // LHU case (unsigned)
-                            1'b0 : data_out = {16'b0, mem[addr], mem[addr+1]};
+                            1'b0 : data_out = {16'b0, mem[addr+1], mem[addr]};
                             // LH case (signed)
-                            1'b1 : data_out = {{16{data_in[15]}},mem[addr], mem[addr+1]};
+                            1'b1 : data_out = {{16{mem[addr+1][3]}}, mem[addr+1], mem[addr]};
                             // Default case if there is an error
                             default : data_out = 32'b0;
                         endcase
                     end
-                    // LB, LBU, SB cases
+                    // LB, LBU cases
                     2'b10 : 
                     begin
                         case(signed_inst)
                             // LBU case (unsigned)
-                            1'b0 : data_out = {24'b0, data_in[7:0]};
-                            // LB, SB cases (signed)
-                            1'b1 : data_out = {{24{data_in[7]}},data_in[7:0]};
+                            1'b0 : data_out = {24'b0, mem[addr]};
+                            // LB case (signed)
+                            1'b1 : data_out = {{24{mem[addr][3]}}, mem[addr]};
                             // Default case if there is an error
                             default : data_out = 32'b0;
                         endcase
@@ -85,8 +85,7 @@ module Data_Mem(
                 endcase
             else
                 begin
-                    mem[addr] = mem[addr];
+                    data_out = 32'b0;
                 end 
-        assign data_out = (mem_read)? mem[addr]:32'd0; //If memory read coming from the control unit is 1, then read the memory in the specified address, else output data = 0.
-    end
+        end
 endmodule
