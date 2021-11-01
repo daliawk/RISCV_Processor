@@ -22,6 +22,7 @@ module ImmGen (
 always @(*) begin
 	case (`OPCODE)
 		`OPCODE_Arith_I   : 	Imm = { {21{IR[31]}}, IR[30:25], IR[24:21], IR[20] };
+		`OPCODE_Load      :     Imm = { {21{IR[31]}}, IR[30:25], IR[24:21], IR[20] };
 		`OPCODE_Store     :     Imm = { {21{IR[31]}}, IR[30:25], IR[11:8], IR[7] };
 		`OPCODE_LUI       :     Imm = { IR[31], IR[30:20], IR[19:12], 12'b0 };
 		`OPCODE_AUIPC     :     Imm = { IR[31], IR[30:20], IR[19:12], 12'b0 };

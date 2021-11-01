@@ -16,6 +16,7 @@
 
 module branching_unit(
   input B,            //Branching signal from Control Unit
+  input jump,
   input[2:0] funct3,  //Instruction[12:14]
   input Z,            //Zero Flag
   input C,            //Carry Flag
@@ -26,6 +27,8 @@ module branching_unit(
   
   always@(*) begin
     if(B == `ONE) begin
+      if(jump) branch = B;
+      else
       case(funct3)
         `BR_BEQ: branch = Z;           //BEQ
         `BR_BNE: branch = !Z;          //BNE

@@ -63,13 +63,13 @@ always @(*) begin
         `OPCODE_AUIPC :
             begin
                 branch = 0; jump = 0; mem_read = 0; mem_to_reg = 0; 
-                ALU_Op = 2'b11; mem_write = 0; ALU_Src = 1;
+                ALU_Op = 2'b10; mem_write = 0; ALU_Src = 1;
                 reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
                 RF_MUX_sel = 2'b01; PC_en = 1'b1;
             end
         `OPCODE_JAL : 
             begin
-                branch = 0; jump = 1; mem_read = 0; mem_to_reg = 0; 
+                branch = 1; jump = 1; mem_read = 0; mem_to_reg = 0; 
                 ALU_Op = 2'b00; mem_write = 0; ALU_Src = 1; 
                 reg_write = 1; signed_inst = 1; AU_inst_sel = 2'b00;
                 RF_MUX_sel = 2'b10; PC_en = 1'b1;

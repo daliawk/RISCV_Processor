@@ -106,8 +106,8 @@ output reg [3:0] ALU_selection
 
     2'b11: // LUI and AUIPC
     ////////////////////////////////// add to defines file
-        ALU_selection = `ALU_UI;
-    default: ALU_selection = `ALU_PASS;
+        ALU_selection = `ALU_PASS;
+    default: ALU_selection = `ALU_ADD;
     endcase          
     end
 

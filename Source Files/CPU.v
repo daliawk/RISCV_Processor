@@ -77,13 +77,13 @@ Control_Unit CU(.rst(rst), .inst(inst), .PC_en(PC_en), .branch(branch), .jump(ju
 
 three_input_Mux_nbit RF_MUX(.a(mem_MUX_out), .b(b_add_out), .c(PC_4), .out(write_data), .sel(RF_MUX_sel));
 
-branching_unit BU(.B(branch), .funct3(inst[14:12]), .Z(Z), .S(S), .V(V), .C(C), .branch(branch_decision));
+branching_unit BU(.B(branch), .jump(jump), .funct3(inst[14:12]), .Z(Z), .S(S), .V(V), .C(C), .branch(branch_decision));
 
 register_file_nbit #(32) RF( .rst(rst),  .clk(clk), .read_reg1(inst[19:15]), .read_reg2(inst[24:20]), .write_reg(inst[11:7]), .write_data(write_data), .write(reg_write), .read_data1(read_data1), .read_data2(read_data2));
  
 ImmGen IG(.IR(inst), .Imm(gen_out));
 
-SLL_nbit #(32) SL(.a(gen_out), .b(shifted_gen_out));
+//SLL_nbit #(32) SL(.a(gen_out), .b(shifted_gen_out));
 
 MUX_2x1_nbit  #(32) MUX_RF(.a(read_data2), .b(gen_out), .sel(ALU_src), .out(ALU_second_input));
 
@@ -99,11 +99,11 @@ Addressing_Unit mem_output(.data_in(mem_out),.AU_inst_sel(AU_inst_sel),.signed_i
 
 MUX_2x1_nbit  #(32) MUX_Mem(.a(ALU_out), .b(mem_mux_input), .sel(mem_to_reg), .out(mem_MUX_out));
 
-Ripple_Carry_Adder_nbit #(32) B_adder(.A(shifted_gen_out), .B(inst_read_address), .Cin(`ZERO), .S(b_add_out), .Cout(discard1));
+Ripple_Carry_Adder_nbit #(32) B_adder(.A(gen_out), .B(inst_read_address), .Cin(`ZERO), .S(b_add_out), .Cout(discard1));
 
 Ripple_Carry_Adder_nbit #(32) PC_adder(.A(4), .B(inst_read_address), .Cin(`ZERO), .S(PC_4) , .Cout(discard2));
 
 MUX_2x1_nbit  #(32) MUX_branch(.a(PC_4), .b(b_add_out), .sel(branch_decision), .out(branch_mux_output));
-MUX_2x1_nbit  #(32) MUX_PC(.a(branch_mux_output), .b(ALU_out), .sel(jump), .out(PC_input));
+MUX_2x1_nbit  #(32) MUX_PC(.a(branch_mux_output), .b(ALU_out), .sel(jump & ~branch), .out(PC_input));
 
 endmodule

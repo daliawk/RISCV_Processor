@@ -73,8 +73,8 @@ output S
                 else
                     ALUout = 32'b0;
             end
-            `ALU_PASS: // pass A as it is
-                ALUout = A;
+            `ALU_PASS: // pass B as it is
+                ALUout = B;
             default:  // default case gives out zeros
                 ALUout = 0;
         endcase

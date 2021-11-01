@@ -23,9 +23,11 @@ module Data_Mem(
 
     initial //Initial values for testbench testing.
         begin
-            mem[0]=32'd17; 
-            mem[1]=32'd9;
-            mem[2]=32'd25; 
+             mem[0]=32'd1;
+             mem[1]=32'd5; 
+//            mem[0]=32'd17; 
+//            mem[1]=32'd9;
+//            mem[2]=32'd25; 
         end
     
     always @(posedge clk) //On the positive edge of the clock, if mem_write coming from the control unit is 1, then write into the memory the specified input data                     
