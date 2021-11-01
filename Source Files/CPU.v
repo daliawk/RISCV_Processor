@@ -65,8 +65,8 @@ wire [31:0] mem_out;
 wire [31:0] b_add_out;
 wire discard1, discard2;
 wire [31:0] PC_4;
-wire [31:0] mem_write_data;
-wire [31:0] mem_mux_input;
+//wire [31:0] mem_write_data;
+//wire [31:0] mem_mux_input;
 wire [31:0] branch_mux_output;
 
 register_nbit #(32) PC (.rst(rst), .load(PC_en), .clk(clk), .D(PC_input),.Q(inst_read_address));
@@ -91,13 +91,13 @@ ALU_Control_Unit ALU_CU(.ALUOp(ALUOp), .inst(inst), .ALU_selection(ALU_selection
 
 ALU_nbit #(32)ALU(.A(read_data1), .B(ALU_second_input), .alu_control(ALU_selection), .ALUout(ALU_out), .Z(Z), .V(V), .C(C), .S(S));
 
-Addressing_Unit mem_input(.data_in(read_data2),.AU_inst_sel(AU_inst_sel),.signed_inst(signed_inst),.data_out(mem_write_data));
+//Addressing_Unit mem_input(.data_in(read_data2),.AU_inst_sel(AU_inst_sel),.signed_inst(signed_inst),.data_out(mem_write_data));
 
-Data_Mem DM( .clk(clk), .mem_read(mem_read), .mem_write(mem_write), .addr(ALU_out[7:2]) ,.data_in(mem_write_data), .data_out(mem_out));
+Data_Mem DM( .clk(clk), .mem_read(mem_read), .mem_write(mem_write), .addr(ALU_out[7:2]) ,.data_in(read_data2), .data_out(mem_out));
 
-Addressing_Unit mem_output(.data_in(mem_out),.AU_inst_sel(AU_inst_sel),.signed_inst(signed_inst),.data_out(mem_mux_input));
+//Addressing_Unit mem_output(.data_in(mem_out),.AU_inst_sel(AU_inst_sel),.signed_inst(signed_inst),.data_out(mem_mux_input));
 
-MUX_2x1_nbit  #(32) MUX_Mem(.a(ALU_out), .b(mem_mux_input), .sel(mem_to_reg), .out(mem_MUX_out));
+MUX_2x1_nbit  #(32) MUX_Mem(.a(ALU_out), .b(mem_out), .sel(mem_to_reg), .out(mem_MUX_out));
 
 Ripple_Carry_Adder_nbit #(32) B_adder(.A(gen_out), .B(inst_read_address), .Cin(`ZERO), .S(b_add_out), .Cout(discard1));
 
