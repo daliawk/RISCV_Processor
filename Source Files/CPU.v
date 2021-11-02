@@ -55,7 +55,7 @@ wire [1:0] ALUOp;
 wire [31:0] write_data;
 wire [31:0] read_data1, read_data2;
 wire [31:0] gen_out;
-wire [31:0] shifted_gen_out;
+//wire [31:0] shifted_gen_out;
 wire [31:0] ALU_second_input;
 wire [3:0] ALU_selection; 
 wire [31:0] ALU_out;
@@ -93,7 +93,7 @@ ALU_nbit #(32)ALU(.A(read_data1), .B(ALU_second_input), .alu_control(ALU_selecti
 
 //Addressing_Unit mem_input(.data_in(read_data2),.AU_inst_sel(AU_inst_sel),.signed_inst(signed_inst),.data_out(mem_write_data));
 
-Data_Mem DM( .clk(clk), .mem_read(mem_read), .mem_write(mem_write), .AU_inst_sel(AU_inst_sel),.signed_inst(signed_inst), .addr(ALU_out[7:2]) ,.data_in(read_data2), .data_out(mem_out));
+Data_Mem DM( .clk(clk), .mem_read(mem_read), .mem_write(mem_write), .AU_inst_sel(AU_inst_sel),.signed_inst(signed_inst), .addr(ALU_out[7:0]) ,.data_in(read_data2), .data_out(mem_out));
 
 //Addressing_Unit mem_output(.data_in(mem_out),.AU_inst_sel(AU_inst_sel),.signed_inst(signed_inst),.data_out(mem_mux_input));
 

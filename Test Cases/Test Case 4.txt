@@ -1,0 +1,12 @@
+lb x1, 8(x0)
+lhu x2, 8(x0)
+slti x3, x1, 0
+sltiu x3, x1, 0
+bltu x1, x2, unsigned_branch_test
+bgeu x2, x1, unsigned_branch_test
+xori x1, x1, 1
+ecall
+
+
+unsigned_branch_test:
+add x0, x0, x0

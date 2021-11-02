@@ -17,16 +17,31 @@ module Data_Mem(
     input mem_write,
     input [1:0] AU_inst_sel,
     input signed_inst,
-    input [5:0] addr, 
+    input [7:0] addr, 
     input [31:0] data_in, 
     output reg [31:0] data_out
     );
-    reg [3:0] mem [0:63]; //Memory that has 64 slots, each slot 4 bits in width.
+    reg [7:0] mem [0:63]; //Memory that has 64 slots, each slot 8 bits in width.
 
     initial //Initial values for testbench testing.
         begin
-             mem[0]=4'd1;
-             mem[1]=4'd5; 
+             mem[0]=8'd1;
+             mem[1]=8'd0; 
+             mem[2]=8'd0;
+             mem[3]=8'd0;
+             mem[4]=8'd5;
+             mem[5]=8'd0; 
+             mem[6]=8'd0;
+             mem[7]=8'd0;
+             mem[8]=-8'd1;
+             mem[9]=8'd0;
+             mem[10]=8'd0;
+             mem[11]=8'd0;
+             mem[12]=8'd0;
+             mem[13]=8'd0;
+             mem[14]=8'd0;
+             mem[15]=8'd0;  
+             
 //            mem[0]=4'd17; 
 //            mem[1]=4'd9;
 //            mem[2]=4'd25; 

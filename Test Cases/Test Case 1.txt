@@ -1,0 +1,11 @@
+add x1, x0, x0 
+lw  x2, 0(x0)  
+or  x3, x1, x2 
+lw  x1, 4(x0)  
+sub x1, x1, x2 
+beq x1, x0, 8  
+beq x0, x0, -8 
+and x3, x1, x2 
+addi x3,x2,5   
+slli x3 x3 2   
+ecall          

@@ -31,7 +31,11 @@ output reg [3:0] ALU_selection
                 3'b000:
                     ALU_selection = `ALU_ADD;
                 3'b001:
+                if(inst[5:4]==2'b01)
+                    ALU_selection = `ALU_SLL;
+                else
                     ALU_selection = `ALU_ADD;
+                   
                 3'b010:
                 begin
                     if(inst[5:4]==2'b01)
@@ -49,7 +53,13 @@ output reg [3:0] ALU_selection
                         ALU_selection = `ALU_XOR;
                 end
                 3'b101:
+                if(inst[5:4]==2'b00)
                     ALU_selection = `ALU_ADD;
+                else if(inst[30]==0)
+                    ALU_selection = `ALU_SRL;
+                else
+                    ALU_selection = `ALU_SRAI;
+
                 3'b110:
                     ALU_selection = `ALU_OR;
                 3'b111:

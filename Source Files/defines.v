@@ -85,6 +85,6 @@
 `define     ALU_SLT         4'b11_01
 `define     ALU_SLTU        4'b11_11
 `define     ALU_UI         4'b01_10
-
+`define     ALU_SRAI        4'b11_00
 `define     SYS_EC_EB       3'b000
 

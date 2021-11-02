@@ -54,22 +54,24 @@ output S
                 ALUout = A>>B;
             `ALU_SRA: // shifting right arithmetically
                 ALUout = $signed(A)>>>B;
+            `ALU_SRAI:
+                ALUout = $signed(A)>>>B[5:0];
             `ALU_SLL: // shifting left
                 ALUout = A<<B;
             `ALU_SLT: // setting on less than unsigned 
             begin 
-                if(A[n-1]!=B[n-1])
-                    ALUout = {31'b0,1'b0};
+                if(A[n-1]& !B[n-1])
+                    ALUout = {31'b0,1'b1};
                 else 
                 if (A<B)
-                    ALUout = {31'b0,1'b0};
+                    ALUout = {31'b0,1'b1};
                 else
                     ALUout = 32'b0;
             end
             `ALU_SLTU: // set on less than unsigned  
             begin
                 if(A<B)
-                    ALUout = {31'b0,1'b0};
+                    ALUout = {31'b0,1'b1};
                 else
                     ALUout = 32'b0;
             end
@@ -82,7 +84,8 @@ output S
     
     assign Z = !(ALUout);
 
-    assign V = (A[n-1] != B[n-1])? 1'b0:(A[n-1] == ALUout[n-1])? 1'b0: 1'b1;
+    //assign V = (A[n-1] != B[n-1])? 1'b0:(A[n-1] == ALUout[n-1])? 1'b0: 1'b1;
+    assign V =  (A[n-1] ^ (modedB[n-1]) ^ summed[n-1] ^ C);
     
     assign S = ALUout[n-1];
     

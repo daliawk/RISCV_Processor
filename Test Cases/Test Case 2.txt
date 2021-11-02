@@ -1,0 +1,18 @@
+lb x1, 4(x0)
+lh x2, 0(x0)
+jal x3, test
+add x3, x1, x2
+lbu x4, 0(x0)
+branch:
+sra x2, x2, x4
+bne x2, x0, branch
+fence
+
+
+test:
+srli x1, x1, 1
+srai x2, x2, 2
+sw x2, 8(x0)
+sh x2, 12(x0)
+sb x2, 16(x0)
+jalr x3, 0(x3)
