@@ -13,9 +13,19 @@
 **********************************************************************/
 
 
-module InstMem(input [5:0] addr, output [31:0] data_out); 
+module InstMem(
+     input sclk, 
+     input mem_read, 
+     input mem_write,
+     input [1:0] AU_inst_sel,
+     input signed_inst,
+     input [7:0] addr, 
+     input [31:0] data_in,
+     output reg [31:0] data_out
+     ); 
     
-    reg [31:0] mem [0:63]; 
+    reg [31:0] inst_mem [0:63]; 
+    reg [7:0] data_mem [0:63]; //Memory that has 64 slots, each slot 8 bits in width.
     
     initial begin
 //     mem[0]=32'b000000000000_00000_010_00001_0000011   ;  //lw x1, 0(x0)
@@ -77,19 +87,78 @@ module InstMem(input [5:0] addr, output [31:0] data_out);
 //     mem[12]=32'b00000000000100000000000001110011; // ebreak
      
      // Test case 4
-     mem[0]=32'h00800083; // lb x1 8(x0)
-     mem[1]=32'h0805103; // lhu x2 8(x0)
-     mem[2]=32'h000a193; // slti x3 x1 0
-     mem[3]=32'h000b193; // sltiu x3 x1 0
-     mem[4]=32'h020e863; // bltu x1 x2 16
-     mem[5]=32'h0117663; // bgeu x2 x1 12
-     mem[6]=32'h010c093; // xori x1 x1 1
-     mem[7]=32'h0000073; // ecall
-     mem[8]=32'h0000033; // add x0 x0 x0
+     inst_mem[0]=32'h00800083; // lb x1 8(x0)
+     inst_mem[1]=32'h0805103; // lhu x2 8(x0)
+     inst_mem[2]=32'h000a193; // slti x3 x1 0
+     inst_mem[3]=32'h000b193; // sltiu x3 x1 0
+     inst_mem[4]=32'h020e863; // bltu x1 x2 16
+     inst_mem[5]=32'h0117663; // bgeu x2 x1 12
+     inst_mem[6]=32'h010c093; // xori x1 x1 1
+     inst_mem[7]=32'h0000073; // ecall
+     inst_mem[8]=32'h0000033; // add x0 x0 x0
+
+     data_mem[0]=4'd17; 
+     data_mem[1]=4'd9;
+     data_mem[2]=4'd25; 
    
      
     end    
-    
-    assign data_out = mem[addr];
+
+    always@(*)begin
+         if(sclk) data_out = inst_mem[addr];
+          else if (mem_read == 1)
+                case(AU_inst_sel) 
+                    // LW case
+                    2'b00 : data_out = {data_mem[addr+3], data_mem[addr+2], data_mem[addr+1], data_mem[addr]};
+                    // LH, LHU cases
+                    2'b01 : 
+                    begin
+                        case(signed_inst)
+                            // LHU case (unsigned)
+                            1'b0 : data_out = {16'b0, data_mem[addr+1], data_mem[addr]};
+                            // LH case (signed)
+                            1'b1 : data_out = {{16{data_mem[addr+1][3]}}, data_mem[addr+1], data_mem[addr]};
+                            // Default case if there is an error
+                            default : data_out = 32'b0;
+                        endcase
+                    end
+                    // LB, LBU cases
+                    2'b10 : 
+                    begin
+                        case(signed_inst)
+                            // LBU case (unsigned)
+                            1'b0 : data_out = {24'b0, data_mem[addr]};
+                            // LB case (signed)
+                            1'b1 : data_out = {{24{data_mem[addr][3]}}, data_mem[addr]};
+                            // Default case if there is an error
+                            default : data_out = 32'b0;
+                        endcase
+                    end
+                    // Default case if there is an error
+                    default : data_out = 32'b0;
+                endcase
+            else
+                begin
+                    data_out = 32'b0;
+                end 
+        end
+
+    always @(negedge sclk) begin
+          if (mem_write == 1)
+            case(AU_inst_sel) 
+                // SW case
+                2'b00 : {data_mem[addr+3], data_mem[addr+2], data_mem[addr+1], data_mem[addr]} = data_in;
+                // SH case
+                2'b01 : { data_mem[addr+1], data_mem[addr] } = data_in[15:0];
+                // SB case
+                2'b10 : data_mem[addr] = data_in[7:0];
+                // Default case if there is an error
+                default : data_mem[addr] = data_mem[addr];
+             endcase
+        else
+            begin
+                data_mem[addr] = data_mem[addr];
+            end 
+    end
 endmodule
 
