@@ -68,10 +68,88 @@ wire [31:0] PC_4;
 //wire [31:0] mem_write_data;
 //wire [31:0] mem_mux_input;
 wire [31:0] branch_mux_output;
+wire sclk;
+
+
+//////////////////////////////////// pipelining //////////////////////////////
+wire [31:0] IF_ID_PC;
+wire [31:0] IF_ID_Inst;
+wire [31:0] ID_EX_PC;
+wire [31:0] ID_EX_RegR1;
+wire [31:0] ID_EX_RegR2;
+wire [31:0] ID_EX_Imm;
+
+N_Bit_Register #(64) IF_ID (rst,1'b1,clk,
+ {Read_Address,inst},
+{IF_ID_PC,IF_ID_Inst} );
+
+
+wire ID_EX_Branch, ID_EX_MemRead, ID_EX_MemtoReg, ID_EX_MemWrite, ID_EX_ALUSrc, ID_EX_RegWrite; 
+wire [1:0] ID_EX_ALUOp;
+
+wire [3:0] ID_EX_Func;
+wire [4:0] ID_EX_Rs1; 
+wire [4:0] ID_EX_Rs2; 
+wire [4:0] ID_EX_Rd;
+
+N_Bit_Register #(155) ID_EX (rst,1'b1,clk,
+ {Branch, MemRead, MemtoReg, MemWrite, ALUSrc, RegWrite, ALUOp,IF_ID_PC,read_data1, read_data2,gen_out,{IF_ID_Inst[30],IF_ID_Inst[14:12]},IF_ID_Inst[19:15], IF_ID_Inst[24:20],IF_ID_Inst[11:7]},
+{ ID_EX_Branch, ID_EX_MemRead, ID_EX_MemtoReg, ID_EX_MemWrite, ID_EX_ALUSrc, ID_EX_RegWrite,ID_EX_ALUOp,ID_EX_PC,ID_EX_RegR1,ID_EX_RegR2,
+ ID_EX_Imm, ID_EX_Func,ID_EX_Rs1,ID_EX_Rs2,ID_EX_Rd} );
+ 
+ 
+ wire [31:0] EX_MEM_BranchAddOut;
+ wire [31:0] EX_MEM_ALU_out; 
+ wire [31:0] EX_MEM_RegR2;
+ wire EX_MEM_Branch, EX_MEM_MemRead, EX_MEM_MemtoReg, EX_MEM_MemWrite, EX_MEM_RegWrite;
+ wire [4:0] EX_MEM_Rd;
+ wire EX_MEM_Zero;
+ 
+ N_Bit_Register #(107) EX_MEM (rst,1'b1,clk,
+  {B_Add_Out,ALU_out,ID_EX_RegR2,ID_EX_Branch, ID_EX_MemRead, ID_EX_MemtoReg, ID_EX_MemWrite, ID_EX_RegWrite,ID_EX_Rd,zFlag },
+ {EX_MEM_BranchAddOut,EX_MEM_ALU_out, EX_MEM_RegR2, EX_MEM_Branch, EX_MEM_MemRead, EX_MEM_MemtoReg, EX_MEM_MemWrite, EX_MEM_RegWrite,
+       EX_MEM_Rd,  EX_MEM_Zero} );
+
+
+wire [31:0] MEM_WB_Mem_out;
+wire [31:0] MEM_WB_ALU_out;
+wire MEM_WB_MemtoReg,MEM_WB_RegWrite;
+wire [4:0] MEM_WB_Rd;
+
+N_Bit_Register #(71) MEM_WB (rst,1'b1,clk,
+ {EX_MEM_MemtoReg,EX_MEM_RegWrite,Mem_out,EX_MEM_ALU_out,EX_MEM_Rd},
+ {MEM_WB_MemtoReg,MEM_WB_RegWrite,MEM_WB_Mem_out, MEM_WB_ALU_out,
+ MEM_WB_Rd} );
+
+
+N_Bit_Register #(32) rg (rst, 1'b1, clk, PC_input,Read_Address);
+
+/////////////////////////////////////// end of pipelining ///////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
 
 register_nbit #(32) PC (.rst(rst), .load(PC_en), .clk(clk), .D(PC_input),.Q(inst_read_address));
 
-InstMem IM(inst_read_address[7:2], inst); 
+InstMem IM( 
+.sclk(sclk),
+ .mem_read(mem_read),
+  .mem_write(mem_write),
+   .AU_inst_sel(AU_inst_sel),
+    .signed_inst(signed_inst),
+     .addr(ALU_out[7:0]),
+      .data_in(read_data2), 
+       .data_out(mem_out)
+      );  
 
 Control_Unit CU(.rst(rst), .inst(inst), .PC_en(PC_en), .branch(branch), .jump(jump), .mem_read(mem_read), .mem_to_reg(mem_to_reg), .mem_write(mem_write), .ALU_Src(ALU_src), .reg_write(reg_write), .signed_inst(signed_inst), .AU_inst_sel(AU_inst_sel), .ALU_Op(ALUOp), .RF_MUX_sel(RF_MUX_sel));
 
