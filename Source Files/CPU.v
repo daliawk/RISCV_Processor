@@ -76,16 +76,26 @@ wire [31:0] MEM_WB_ALU_out;
 wire [31:0] MEM_WB_b_add_out;
 wire [31:0] MEM_WB_mem_out;
 wire [4:0] MEM_WB_write_reg;
+reg sclk;
+////////////////clock divider/////////////
+//Clock_Divider #(500000) cd  (clk, rst, sclk);
+always@(posedge clk, posedge rst)
+begin 
+    if(rst)
+        sclk = 0;
+    else
+        sclk = ~sclk;
+end
 
 ///////////////////////// IR  begins /////////////////////////////////////////////////////////////////////////////////////
-register_nbit #(32) PC (.rst(rst), .load(PC_en), .clk(clk), .D(PC_input),.Q(PC_out));
+register_nbit #(32) PC (.rst(rst), .load(PC_en), .clk(sclk), .D(PC_input),.Q(PC_out));
 
 InstMem IM(PC_out[7:2], inst); 
 
 Ripple_Carry_Adder_nbit #(32) PC_adder(.A(4), .B(PC_out), .Cin(`ZERO), .S(PC_4) , .Cout(discard2));
 ////////////////////////// IR ends ////////////////////////////////////////////////////////////////////////////////////////
 
-register_nbit #(96) IF_ID (clk, rst,`ONE,
+register_nbit #(96) IF_ID (~sclk, rst,`ONE,
     {PC_4, PC_out, inst},
     {IF_ID_PC_4, IF_ID_PC_out, IF_ID_inst}
     );
@@ -96,14 +106,14 @@ Control_Unit CU(.rst(rst), .inst(IF_ID_inst), .PC_en(PC_en), .branch(branch), .j
                 .signed_inst(signed_inst), .AU_inst_sel(AU_inst_sel), .ALU_Op(ALU_Op), .RF_MUX_sel(RF_MUX_sel));
 
 
-register_file_nbit #(32) RF( .rst(rst),  .clk(clk), .read_reg1(IF_ID_inst[19:15]), .read_reg2(IF_ID_inst[24:20]), 
+register_file_nbit #(32) RF( .rst(rst),  .clk(~sclk), .read_reg1(IF_ID_inst[19:15]), .read_reg2(IF_ID_inst[24:20]), 
                             .write_reg(MEM_WB_write_reg), .write_data(write_data), .write(MEM_WB_reg_write), 
                             .read_data1(read_data1), .read_data2(read_data2));
 
 ImmGen IG(.IR(IF_ID_inst), .Imm(gen_out));
 ///////////////////////// ID ends ////////////////////////////////////////////////////////////////////////////////////////
 
-register_nbit #(206) ID_EX (clk, rst,`ONE,
+register_nbit #(206) ID_EX (sclk, rst,`ONE,
     {branch, jump, mem_read, mem_to_reg, mem_write, ALU_src, reg_write, signed_inst, AU_inst_sel, ALU_Op, RF_MUX_sel,
     IF_ID_PC_4, IF_ID_PC_out, read_data1, read_data2, gen_out, IF_ID_inst},
     {ID_EX_branch, ID_EX_jump, ID_EX_mem_read, ID_EX_mem_to_reg, ID_EX_mem_write, ID_EX_ALU_Src, ID_EX_reg_write, 
@@ -123,7 +133,7 @@ ALU_nbit #(32)ALU(.A(ID_EX_read_data1), .B(ALU_second_input), .alu_control(ALU_s
 //////////////////////// EX ends //////////////////////////////////////////////////////////////////////////////////////////// 
 
 
-register_nbit #(151) EX_MEM (clk, rst,`ONE,
+register_nbit #(151) EX_MEM (~sclk, rst,`ONE,
     {ID_EX_branch, ID_EX_jump, ID_EX_mem_read, ID_EX_mem_to_reg, ID_EX_mem_write, ID_EX_reg_write, ID_EX_signed_inst, 
     ID_EX_AU_inst_sel, ID_EX_RF_MUX_sel, ID_EX_PC_4, ALU_out, Z, V, C, S, ID_EX_inst[11:7], ID_EX_read_data2, ID_EX_inst[14:12],
     b_add_out},
@@ -141,11 +151,11 @@ branching_unit BU(.B(EX_MEM_branch), .jump(EX_MEM_jump), .funct3(EX_MEM_funct3),
 MUX_2x1_nbit  #(32) MUX_branch(.a(PC_4), .b(EX_MEM_b_add_out), .sel(branch_decision), .out(branch_mux_output));
 MUX_2x1_nbit  #(32) MUX_PC(.a(branch_mux_output), .b(EX_MEM_ALU_out), .sel(EX_MEM_jump & ~EX_MEM_branch), .out(PC_input));
 
-Data_Mem DM( .clk(clk), .mem_read(EX_MEM_mem_read), .mem_write(EX_MEM_mem_write), .AU_inst_sel(EX_MEM_AU_inst_sel),
+Data_Mem DM( .clk(sclk), .mem_read(EX_MEM_mem_read), .mem_write(EX_MEM_mem_write), .AU_inst_sel(EX_MEM_AU_inst_sel),
             .signed_inst(signed_inst), .addr(EX_MEM_ALU_out[7:0]) ,.data_in(EX_MEM_read_data2), .data_out(mem_out));
 //////////////////////// MEM ends //////////////////////////////////////////////////////////////////////////////////////////
 
-register_nbit #(137) MEM_WB (clk, rst,`ONE,
+register_nbit #(137) MEM_WB (sclk, rst,`ONE,
     {EX_MEM_mem_to_reg, EX_MEM_reg_write, EX_MEM_RF_MUX_sel, EX_MEM_PC_4, EX_MEM_ALU_out, EX_MEM_b_add_out, mem_out, EX_MEM_write_reg},
     {MEM_WB_mem_to_reg, MEM_WB_reg_write, MEM_WB_RF_MUX_sel, MEM_WB_PC_4, MEM_WB_ALU_out, MEM_WB_b_add_out, MEM_WB_mem_out,
     MEM_WB_write_reg}
