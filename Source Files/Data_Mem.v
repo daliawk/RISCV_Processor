@@ -25,15 +25,15 @@ module Data_Mem(
 
     initial //Initial values for testbench testing.
         begin
-             mem[0]=8'd1;
+             mem[0]=8'd17;
              mem[1]=8'd0; 
              mem[2]=8'd0;
              mem[3]=8'd0;
-             mem[4]=8'd5;
+             mem[4]=8'd9;
              mem[5]=8'd0; 
              mem[6]=8'd0;
              mem[7]=8'd0;
-             mem[8]=-8'd1;
+             mem[8]=8'd25;
              mem[9]=8'd0;
              mem[10]=8'd0;
              mem[11]=8'd0;
