@@ -22,7 +22,7 @@ module CPU(
 
 wire [31:0] PC_out;
 wire [31:0] PC_input;
-wire [31:0] inst;
+//wire [31:0] inst;
 wire jump, branch, mem_read, mem_to_reg, mem_write, ALU_src, reg_write, signed_inst,  PC_en; 
 wire [1:0] RF_MUX_sel;
 wire [31:0] mem_MUX_out;
@@ -41,6 +41,7 @@ wire [31:0] b_add_out;
 wire discard1, discard2;
 wire [31:0] PC_4;
 wire [31:0] branch_mux_output;
+wire [7:0] mem_in;
 
 // Pipelining wires
 wire [31:0] IF_ID_PC_4;
@@ -90,13 +91,16 @@ end
 ///////////////////////// IR  begins /////////////////////////////////////////////////////////////////////////////////////
 register_nbit #(32) PC (.rst(rst), .load(PC_en), .clk(sclk), .D(PC_input),.Q(PC_out));
 
-InstMem IM(PC_out[7:2], inst); 
-
 Ripple_Carry_Adder_nbit #(32) PC_adder(.A(4), .B(PC_out), .Cin(`ZERO), .S(PC_4) , .Cout(discard2));
+
+MUX_2x1_nbit  #(8) MUX_memory(.a(EX_MEM_read_data2[7:0]), .b(PC_out[7:0]), .sel(sclk), .out(mem_in));
+
+Memory Mem(.sclk(sclk), .mem_read(EX_MEM_mem_read), .mem_write(EX_MEM_mem_write), .AU_inst_sel(EX_MEM_AU_inst_sel), 
+            .signed_inst(EX_MEM_signed_inst),.addr(mem_in), .data_in(EX_MEM_read_data2), .data_out(mem_out)); 
 ////////////////////////// IR ends ////////////////////////////////////////////////////////////////////////////////////////
 
 register_nbit #(96) IF_ID (~sclk, rst,`ONE,
-    {PC_4, PC_out, inst},
+    {PC_4, PC_out, mem_out},
     {IF_ID_PC_4, IF_ID_PC_out, IF_ID_inst}
     );
 
@@ -151,8 +155,9 @@ branching_unit BU(.B(EX_MEM_branch), .jump(EX_MEM_jump), .funct3(EX_MEM_funct3),
 MUX_2x1_nbit  #(32) MUX_branch(.a(PC_4), .b(EX_MEM_b_add_out), .sel(branch_decision), .out(branch_mux_output));
 MUX_2x1_nbit  #(32) MUX_PC(.a(branch_mux_output), .b(EX_MEM_ALU_out), .sel(EX_MEM_jump & ~EX_MEM_branch), .out(PC_input));
 
-Data_Mem DM( .clk(sclk), .mem_read(EX_MEM_mem_read), .mem_write(EX_MEM_mem_write), .AU_inst_sel(EX_MEM_AU_inst_sel),
-            .signed_inst(signed_inst), .addr(EX_MEM_ALU_out[7:0]) ,.data_in(EX_MEM_read_data2), .data_out(mem_out));
+//Data_Mem DM( .clk(sclk), .mem_read(EX_MEM_mem_read), .mem_write(EX_MEM_mem_write), .AU_inst_sel(EX_MEM_AU_inst_sel),
+//            .signed_inst(EX_MEM_signed_inst), .addr(EX_MEM_ALU_out[7:0]) ,.data_in(EX_MEM_read_data2), .data_out(mem_out));
+
 //////////////////////// MEM ends //////////////////////////////////////////////////////////////////////////////////////////
 
 register_nbit #(137) MEM_WB (sclk, rst,`ONE,
