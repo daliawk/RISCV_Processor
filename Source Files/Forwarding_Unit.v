@@ -21,8 +21,6 @@
 
 
 module Forwarding_Unit(
-input  EX_MEM_RegWrite,
-input [4:0] EX_MEM_RegisterRd,
 input [4:0] ID_EX_RegisterRs1,
 input [4:0] ID_EX_RegisterRs2,
 input  MEM_WB_RegWrite,
