@@ -18,28 +18,26 @@ module branching_unit(
   input B,            //Branching signal from Control Unit
   input jump,
   input[2:0] funct3,  //Instruction[12:14]
-  input Z,            //Zero Flag
-  input C,            //Carry Flag
-  input V,            //Overflow Flag
-  input S,            //Negative Flag
-  output reg branch       //Final branching decision
+  input [31:0] data1,
+  input [31:0] data2,
+  output reg [1:0] decision       //Final branching decision
   );
   
   always@(*) begin
     if(B == `ONE) begin
-      if(jump) branch = B;
+      if(jump) decision = 2'b01;
       else
       case(funct3)
-        `BR_BEQ: branch = Z;           //BEQ
-        `BR_BNE: branch = !Z;          //BNE
-        `BR_BLT: branch = (S != V);    //BLT
-        `BR_BGE: branch = (S == V);    //BGE
-        `BR_BLTU: branch = !C;         //BLTU
-        `BR_BGEU: branch = C;          //BGEU
-        default: branch = ~B;          //default case: does not branch
+        `BR_BEQ: decision = {1'b0,(data1 == data2)};           //BEQ
+        `BR_BNE: decision = {1'b0,!(data1 == data2)};          //BNE
+        `BR_BLT: decision = {1'b0,$signed(data1 < data2)};    //BLT
+        `BR_BGE: decision = {1'b0,$signed(data1 >= data2)};    //BGE
+        `BR_BLTU: decision = {1'b0,$unsigned(data1 < data2)};         //BLTU
+        `BR_BGEU: decision = {1'b0,$unsigned(data1 >= data2)};          //BGEU
+        default: decision = 1'b00;          //default case: does not branch
       endcase
     end
     else
-      branch = B;                   
+      decision = (jump)? 2'b10: 2'b00;                   
   end
 endmodule
