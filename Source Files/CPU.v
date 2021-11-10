@@ -99,7 +99,7 @@ register_nbit #(32) PC (.rst(rst), .load(PC_en), .clk(sclk), .D(PC_input),.Q(PC_
 
 Ripple_Carry_Adder_nbit #(32) PC_adder(.A(4), .B(PC_out), .Cin(`ZERO), .S(PC_4) , .Cout(discard2));
 
-MUX_2x1_nbit  #(8) MUX_memory(.a(EX_MEM_read_data2[7:0]), .b(PC_out[7:0]), .sel(sclk), .out(mem_in));
+MUX_2x1_nbit  #(8) MUX_memory(.a(EX_MEM_ALU_out[7:0]), .b(PC_out[7:0]), .sel(sclk), .out(mem_in));
 
 Memory Mem(.sclk(sclk), .mem_read(EX_MEM_mem_read), .mem_write(EX_MEM_mem_write), .AU_inst_sel(EX_MEM_AU_inst_sel), 
             .signed_inst(EX_MEM_signed_inst),.addr(mem_in), .data_in(EX_MEM_read_data2), .data_out(mem_out)); 
