@@ -30,10 +30,10 @@ module branching_unit(
       case(funct3)
         `BR_BEQ: decision = {1'b0,(data1 == data2)};           //BEQ
         `BR_BNE: decision = {1'b0,!(data1 == data2)};          //BNE
-        `BR_BLT: decision = {1'b0,$signed(data1 < data2)};    //BLT
-        `BR_BGE: decision = {1'b0,$signed(data1 >= data2)};    //BGE
-        `BR_BLTU: decision = {1'b0,$unsigned(data1 < data2)};         //BLTU
-        `BR_BGEU: decision = {1'b0,$unsigned(data1 >= data2)};          //BGEU
+        `BR_BLT: decision = {1'b0,$signed(data1) < $signed(data2)};    //BLT
+        `BR_BGE: decision = {1'b0,$signed(data1) >= $signed(data2)};    //BGE
+        `BR_BLTU: decision = {1'b0,data1 < data2};         //BLTU
+        `BR_BGEU: decision = {1'b0,data1 >= data2};          //BGEU
         default: decision = 1'b00;          //default case: does not branch
       endcase
     end

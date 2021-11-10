@@ -40,7 +40,6 @@ wire [31:0] b_add_out;
 wire [31:0] jalr_add_out;
 wire discard1, discard2;
 wire [31:0] PC_4;
-wire [31:0] branch_mux_output;
 wire [7:0] mem_in;
 
 // Pipelining wires
@@ -48,7 +47,7 @@ wire [31:0] IF_ID_PC_4;
 wire [31:0] IF_ID_PC_out;
 wire [31:0] IF_ID_inst;
 
-wire ID_EX_branch, ID_EX_jump, ID_EX_mem_read, ID_EX_mem_to_reg, ID_EX_mem_write, ID_EX_ALU_Src, ID_EX_reg_write, ID_EX_signed_inst;
+wire ID_EX_mem_read, ID_EX_mem_to_reg, ID_EX_mem_write, ID_EX_ALU_Src, ID_EX_reg_write, ID_EX_signed_inst;
 wire [1:0] ID_EX_AU_inst_sel;
 wire [1:0] ID_EX_ALU_Op;
 wire [1:0] ID_EX_RF_MUX_sel;
@@ -58,24 +57,19 @@ wire [31:0] ID_EX_gen_out;
 wire [31:0] ID_EX_inst;
 wire [31:0] ID_EX_PC_4;
 wire [31:0] ID_EX_PC_out;
-//wire [4:0] ID_EX_Rs1;
-//wire [4:0] ID_EX_Rs2;
 
-wire EX_MEM_branch, EX_MEM_jump, EX_MEM_mem_read, EX_MEM_mem_to_reg, EX_MEM_mem_write, EX_MEM_reg_write, EX_MEM_signed_inst;
+wire EX_MEM_mem_read, EX_MEM_mem_to_reg, EX_MEM_mem_write, EX_MEM_reg_write, EX_MEM_signed_inst;
 wire [1:0] EX_MEM_AU_inst_sel;
 wire [1:0] EX_MEM_RF_MUX_sel;
 wire [31:0] EX_MEM_PC_4;
 wire [31:0] EX_MEM_ALU_out;
-wire EX_MEM_Z, EX_MEM_V, EX_MEM_C, EX_MEM_S;
 wire [4:0] EX_MEM_write_reg;
 wire [31:0] EX_MEM_read_data2;
-wire [2:0] EX_MEM_funct3;
 wire [31:0] EX_MEM_b_add_out;
 
-wire MEM_WB_mem_to_reg, MEM_WB_reg_write;
+wire MEM_WB_reg_write;
 wire [1:0] MEM_WB_RF_MUX_sel;
 wire [31:0] MEM_WB_PC_4;
-wire [31:0] MEM_WB_ALU_out;
 wire [31:0] MEM_WB_b_add_out;
 wire [31:0] MEM_WB_mem_MUX_out;
 wire [4:0] MEM_WB_write_reg;
@@ -128,7 +122,7 @@ ImmGen IG(.IR(IF_ID_inst), .Imm(gen_out));
 
 // Branching
 MUX_2x1_nbit  #(32) MUX_branch_A(.a(read_data1), .b(mem_MUX_out), .sel(forwardA_branch), .out(forwarded_A_branch));
-MUX_2x1_nbit  #(32) MUX_branch_B(.a(2), .b(mem_MUX_out), .sel(forwardB_branch), .out(forwarded_B_branch));
+MUX_2x1_nbit  #(32) MUX_branch_B(.a(read_data2), .b(mem_MUX_out), .sel(forwardB_branch), .out(forwarded_B_branch));
 
 
 branching_unit BU(.B(branch), .jump(jump), .funct3(IF_ID_inst[14:12]), .data1(forwarded_A_branch), 
@@ -143,9 +137,9 @@ three_input_Mux_nbit branch_mux(.a(PC_4), .b(b_add_out), .c(jalr_add_out), .out(
 ///////////////////////// ID ends ////////////////////////////////////////////////////////////////////////////////////////
 
 register_nbit #(206) ID_EX (sclk, rst,`ONE,
-    {branch, jump, mem_read, mem_to_reg, mem_write, ALU_src, reg_write, signed_inst, AU_inst_sel, ALU_Op, RF_MUX_sel,
+    {mem_read, mem_to_reg, mem_write, ALU_src, reg_write, signed_inst, AU_inst_sel, ALU_Op, RF_MUX_sel,
     IF_ID_PC_4, IF_ID_PC_out, read_data1, read_data2, gen_out, IF_ID_inst},
-    {ID_EX_branch, ID_EX_jump, ID_EX_mem_read, ID_EX_mem_to_reg, ID_EX_mem_write, ID_EX_ALU_Src, ID_EX_reg_write, 
+    {ID_EX_mem_read, ID_EX_mem_to_reg, ID_EX_mem_write, ID_EX_ALU_Src, ID_EX_reg_write, 
     ID_EX_signed_inst, ID_EX_AU_inst_sel, ID_EX_ALU_Op, ID_EX_RF_MUX_sel, ID_EX_PC_4, ID_EX_PC_out, ID_EX_read_data1, 
     ID_EX_read_data2, ID_EX_gen_out, ID_EX_inst}
     );
@@ -170,30 +164,22 @@ ALU_nbit #(32)ALU(.A(forwarded_A_ALU), .B(ALU_second_input), .alu_control(ALU_se
 
 
 register_nbit #(200) EX_MEM (~sclk, rst,`ONE,
-    {ID_EX_branch, ID_EX_jump, ID_EX_mem_read, ID_EX_mem_to_reg, ID_EX_mem_write, ID_EX_reg_write, ID_EX_signed_inst, 
-    ID_EX_AU_inst_sel, ID_EX_RF_MUX_sel, ID_EX_PC_4, ALU_out, Z, V, C, S, ID_EX_inst[11:7], forwarded_B_ALU, ID_EX_inst[14:12],
-    b_add_out},
-    {EX_MEM_branch, EX_MEM_jump, EX_MEM_mem_read, EX_MEM_mem_to_reg, EX_MEM_mem_write, EX_MEM_reg_write, 
-     EX_MEM_signed_inst, EX_MEM_AU_inst_sel, EX_MEM_RF_MUX_sel, EX_MEM_PC_4, EX_MEM_ALU_out, EX_MEM_Z, EX_MEM_V, 
-     EX_MEM_C, EX_MEM_S, EX_MEM_write_reg, EX_MEM_read_data2, EX_MEM_funct3, EX_MEM_b_add_out}
+    {ID_EX_mem_read, ID_EX_mem_to_reg, ID_EX_mem_write, ID_EX_reg_write, ID_EX_signed_inst, 
+    ID_EX_AU_inst_sel, ID_EX_RF_MUX_sel, ID_EX_PC_4, ALU_out, ID_EX_inst[11:7], forwarded_B_ALU, b_add_out},
+    {EX_MEM_mem_read, EX_MEM_mem_to_reg, EX_MEM_mem_write, EX_MEM_reg_write, 
+     EX_MEM_signed_inst, EX_MEM_AU_inst_sel, EX_MEM_RF_MUX_sel, EX_MEM_PC_4, EX_MEM_ALU_out, EX_MEM_write_reg, EX_MEM_read_data2, EX_MEM_b_add_out}
     );
 
 
 //////////////////////// MEM begins ///////////////////////////////////////////////////////////////////////////////////////////
-//branching_unit BU(.B(EX_MEM_branch), .jump(EX_MEM_jump), .funct3(EX_MEM_funct3), .Z(EX_MEM_Z), .S(EX_MEM_S), .V(EX_MEM_V), 
-//                    .C(EX_MEM_C), .branch(branch_decision));
-
-
-//MUX_2x1_nbit  #(32) MUX_branch(.a(PC_4), .b(EX_MEM_b_add_out), .sel(branch_decision), .out(branch_mux_output));
-//MUX_2x1_nbit  #(32) MUX_PC(.a(branch_mux_output), .b(EX_MEM_ALU_out), .sel(EX_MEM_jump & ~EX_MEM_branch), .out(PC_input));
 
 MUX_2x1_nbit  #(32) MUX_Mem(.a(EX_MEM_ALU_out), .b(mem_out), .sel(EX_MEM_mem_to_reg), .out(mem_MUX_out));
 
 //////////////////////// MEM ends //////////////////////////////////////////////////////////////////////////////////////////
 
 register_nbit #(200) MEM_WB (sclk, rst,`ONE,
-    {EX_MEM_mem_to_reg, EX_MEM_reg_write, EX_MEM_RF_MUX_sel, EX_MEM_PC_4, EX_MEM_ALU_out, EX_MEM_b_add_out, mem_MUX_out, EX_MEM_write_reg},
-    {MEM_WB_mem_to_reg, MEM_WB_reg_write, MEM_WB_RF_MUX_sel, MEM_WB_PC_4, MEM_WB_ALU_out, MEM_WB_b_add_out, MEM_WB_mem_MUX_out,
+    {EX_MEM_reg_write, EX_MEM_RF_MUX_sel, EX_MEM_PC_4, EX_MEM_b_add_out, mem_MUX_out, EX_MEM_write_reg},
+    {MEM_WB_reg_write, MEM_WB_RF_MUX_sel, MEM_WB_PC_4, MEM_WB_b_add_out, MEM_WB_mem_MUX_out,
     MEM_WB_write_reg}
     );
 
@@ -201,6 +187,7 @@ register_nbit #(200) MEM_WB (sclk, rst,`ONE,
 
 three_input_Mux_nbit RF_MUX(.a(MEM_WB_mem_MUX_out), .b(MEM_WB_b_add_out), .c(MEM_WB_PC_4), .out(write_data), .sel(MEM_WB_RF_MUX_sel));
 ///////////////////// WB ends //////////////////////////////////////////////////////////////////
+
 
 
 endmodule
