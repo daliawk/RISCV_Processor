@@ -23,23 +23,38 @@
 module Forwarding_Unit(
 input [4:0] ID_EX_RegisterRs1,
 input [4:0] ID_EX_RegisterRs2,
+input [4:0] IF_ID_RegisterRs1,
+input [4:0] IF_ID_RegisterRs2,
 input  MEM_WB_RegWrite,
+input  EX_MEM_RegWrite,
 input [4:0] MEM_WB_RegisterRd,
-output reg forwardA,
-output reg  forwardB
+input [4:0] EX_MEM_RegisterRd,
+output reg forwardA_ALU,
+output reg  forwardB_ALU,
+output reg forwardA_branch,
+output reg  forwardB_branch
     );
     always@(*) 
+        // Forwarding to ALU
         begin
            if ((MEM_WB_RegWrite && (MEM_WB_RegisterRd != 0))
                &&(MEM_WB_RegisterRd == ID_EX_RegisterRs1))
-                    forwardA = 1'b1; 
-           else forwardA = 1'b0;
+                    forwardA_ALU = 1'b1; 
+           else forwardA_ALU = 1'b0;
        
-          begin
-              if ( MEM_WB_RegWrite && (MEM_WB_RegisterRd != 0)
+           if ( MEM_WB_RegWrite && (MEM_WB_RegisterRd != 0)
                 &&(MEM_WB_RegisterRd == ID_EX_RegisterRs2))
-                     forwardB = 1'b1;               
-           else forwardB = 1'b0;
-        end
+                     forwardB_ALU = 1'b1;               
+           else forwardB_ALU = 1'b0;
+        
+        // Forwarding for branching
+           if ((EX_MEM_RegWrite && (EX_MEM_RegisterRd != 0))
+               &&(EX_MEM_RegisterRd == IF_ID_RegisterRs1))
+                    forwardA_branch = 1'b1; 
+           else forwardA_branch = 1'b0;
+              if ( EX_MEM_RegWrite && (EX_MEM_RegisterRd != 0)
+                &&(EX_MEM_RegisterRd == IF_ID_RegisterRs2))
+                     forwardB_branch = 1'b1;               
+           else forwardB_branch = 1'b0;
        end
 endmodule
