@@ -11,21 +11,21 @@
 *
 * Change history: 10/25/21 – Modified file to follow code guidelines 
 *                 10/29/21 - Modified to add the rest of the RV32I Instructions
-* 
+*                 11/15/21 - Modified to add Multiplication and Division Instructions (M)
 **********************************************************************/ 
 
 
 module ALU_Control_Unit(
-input [1:0] ALUOp,
+input [2:0] ALUOp,
 input [31:0] inst, 
-output reg [3:0] ALU_selection
+output reg [4:0] ALU_selection
 );
 
     always @(*)
     begin
     case(ALUOp)
 
-    2'b00: // ALL I and S format istructions
+    3'b000: // ALL I and S format istructions
         begin
             case(inst[14:12])
                 3'b000:
@@ -69,12 +69,12 @@ output reg [3:0] ALU_selection
         endcase
         end
     
-    2'b01: // all branch and jal statements
+    3'b001: // all branch and jal statements
         begin
             ALU_selection = `ALU_SUB;
         end   
     
-    2'b10: // R-format functions
+    3'b010: // R-format functions
         begin
         case(inst[14:12])
 
@@ -111,12 +111,37 @@ output reg [3:0] ALU_selection
 
             3'b111: 
                 ALU_selection = `ALU_AND;
+            default:
+                    ALU_selection = 4'b0000;    
         endcase     
         end
 
-    2'b11: // LUI and AUIPC
+    3'b011: // LUI and AUIPC
     ////////////////////////////////// add to defines file
         ALU_selection = `ALU_PASS;
+    3'b100: //M-type instructions (Division and Multiplication)
+        begin
+            case (inst[14:12])
+                `F3_MUL: 
+                    ALU_selection = `ALU_MUL;
+                `F3_MULH: 
+                    ALU_selection = `ALU_MULH;
+                `F3_MULHSU: 
+                    ALU_selection = `ALU_MULHSU;
+                `F3_MULHU: 
+                    ALU_selection = `ALU_MULHU;
+                `F3_DIV: 
+                    ALU_selection = `ALU_DIV;
+                `F3_DIVU: 
+                    ALU_selection = `ALU_DIVU;
+                `F3_REM: 
+                    ALU_selection = `ALU_REM;
+                `F3_REMU: 
+                    ALU_selection = `ALU_REMU;
+                default:
+                    ALU_selection = 4'b0000;
+            endcase
+        end
     default: ALU_selection = `ALU_ADD;
     endcase          
     end
