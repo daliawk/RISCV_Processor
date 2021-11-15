@@ -108,7 +108,7 @@ register_nbit #(96) IF_ID (~sclk, rst,`ONE,
     {IF_ID_PC_4, IF_ID_PC_out, IF_ID_inst}
     );
 
-///////////////////////// ID  begins /////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////// ID  begins /////////////////////////////////////////////////////////////////////////////
 Control_Unit CU(.rst(rst), .inst(IF_ID_inst), .PC_en(PC_en), .branch(branch), .jump(jump), .mem_read(mem_read), 
                 .mem_to_reg(mem_to_reg), .mem_write(mem_write), .ALU_Src(ALU_src), .reg_write(reg_write), 
                 .signed_inst(signed_inst), .AU_inst_sel(AU_inst_sel), .ALU_Op(ALU_Op), .RF_MUX_sel(RF_MUX_sel));
