@@ -98,22 +98,46 @@ output S
                 ALUout = ($signed(A) * B) >>> 32;
 
             `ALU_MULHU: // multiplies 2 unsigned operands rs1 and rs2 and stores the upper 32 bits in rd.
-                ALUout = (A * B) >> 32);
+                ALUout = (A * B) >> 32;
 
             `ALU_DIV:  // 
-                ALUout = $signed(A) / $signed(B);
-
+                begin
+                    if(B == 32'b0)
+                        ALUout = -32'd1;
+                    else    
+                        begin
+                            if(A == -32'd2147483648 && B == -32'd1)
+                                ALUout = -32'd2147483648;
+                            else
+                                ALUout = $signed(A) / $signed(B);
+                        end
+                end
             `ALU_DIVU: // 
-                ALUout = A / B;
-
+                begin
+                    if(B == 32'b0)
+                        ALUout = 32'd4294967295;
+                    else
+                        ALUout = A / B;
+                end
             `ALU_REM: // 
-                ALUout = $signed(A) % $signed(B);
-
+                begin
+                    if(B == 32'b0)
+                        ALUout = A;
+                    else
+                        begin
+                            if(A == -32'd2147483648 && B == -32'd1)
+                                ALUout = 32'b0;
+                            else 
+                                ALUout = $signed(A) % $signed(B);
+                        end
+                end
             `ALU_REMU: // 
-                ALUout = A % B;
-
-            default:  // default case gives out zeros
-                ALUout = 0;
+                begin
+                    if(B == 32'b0)
+                        ALUout = A;
+                    else
+                        ALUout = A % B;
+                end
         endcase
     end
     
