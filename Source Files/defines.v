@@ -15,7 +15,7 @@
 `define     OPCODE_JALR     5'b11_001
 `define     OPCODE_JAL      5'b11_011
 `define     OPCODE_Arith_I  5'b00_100
-`define     OPCODE_Arith_R  5'b01_100
+`define     OPCODE_Arith_R_M 5'b01_100
 `define     OPCODE_AUIPC    5'b00_101
 `define     OPCODE_LUI      5'b01_101
 `define     OPCODE_SYSTEM   5'b11_100 
@@ -44,6 +44,7 @@
 `define     F7_SRA           7'b0100000
 `define     F7_OR            7'b0000000
 `define     F7_AND           7'b0000000
+`define     F7_M             7'b0000001
 
 `define     F3_ADD_SUB      3'b000
 `define     F3_SLL          3'b001
@@ -53,6 +54,15 @@
 `define     F3_SRL_SRA      3'b101
 `define     F3_OR           3'b110
 `define     F3_AND          3'b111
+
+`define     F3_MUL          3'b000
+`define     F3_MULH         3'b001
+`define     F3_MULHSU       3'b010
+`define     F3_MULHU        3'b011
+`define     F3_DIV          3'b100
+`define     F3_DIVU         3'b101
+`define     F3_REM          3'b110
+`define     F3_REMU         3'b111
 
 `define     F3_SB          3'b000
 `define     F3_SH          3'b001
@@ -73,18 +83,28 @@
 
 `define     OPCODE          IR[`IR_opcode]
 
-`define     ALU_ADD         4'b00_00
-`define     ALU_SUB         4'b00_01
-`define     ALU_PASS        4'b00_11
-`define     ALU_OR          4'b01_00
-`define     ALU_AND         4'b01_01
-`define     ALU_XOR         4'b01_11
-`define     ALU_SRL         4'b10_00
-`define     ALU_SRA         4'b10_10
-`define     ALU_SLL         4'b10_01
-`define     ALU_SLT         4'b11_01
-`define     ALU_SLTU        4'b11_11
-`define     ALU_UI         4'b01_10
-`define     ALU_SRAI        4'b11_00
+`define     ALU_ADD         5'b000_00
+`define     ALU_SUB         5'b000_01
+`define     ALU_PASS        5'b000_11
+`define     ALU_OR          5'b001_00
+`define     ALU_AND         5'b001_01
+`define     ALU_XOR         5'b001_11
+`define     ALU_SRL         5'b010_00
+`define     ALU_SRA         5'b010_10
+`define     ALU_SLL         5'b010_01
+`define     ALU_SLT         5'b011_01
+`define     ALU_SLTU        5'b011_11
+`define     ALU_UI          5'b001_10
+`define     ALU_SRAI        5'b011_00
+
+`define     ALU_MUL         5'b100_00
+`define     ALU_MULH        5'b100_01
+`define     ALU_MULHSU      5'b100_10
+`define     ALU_MULHU       5'b100_11
+`define     ALU_DIV         5'b101_00
+`define     ALU_DIVU        5'b101_01
+`define     ALU_REM         5'b101_10
+`define     ALU_REMU        5'b101_11
+
 `define     SYS_EC_EB       3'b000
 
