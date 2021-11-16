@@ -82,8 +82,9 @@ wire [31:0] forwarded_A_ALU;
 wire [31:0] forwarded_B_ALU;
 wire [31:0] forwarded_A_branch;
 wire [31:0] forwarded_B_branch;
-
-
+wire terminate;
+wire comp;
+wire [31:0] uncomp_inst;
 always@(posedge clk, posedge rst)
 begin 
     if(rst)
@@ -93,18 +94,21 @@ begin
 end
 
 ///////////////////////// IR  begins /////////////////////////////////////////////////////////////////////////////////////
-register_nbit #(32) PC (.rst(rst), .load(PC_en), .clk(sclk), .D(PC_input),.Q(PC_out));
+register_nbit #(32) PC (.rst(rst), .load(PC_en | terminate), .clk(sclk), .D(PC_input),.Q(PC_out));
 
-Ripple_Carry_Adder_nbit #(32) PC_adder(.A(4), .B(PC_out), .Cin(`ZERO), .S(PC_4) , .Cout(discard2));
+Ripple_Carry_Adder_nbit #(32) PC_adder(.A((comp == 1)? 2:4), .B(PC_out), .Cin(`ZERO), .S(PC_4) , .Cout(discard2));
 
 MUX_2x1_nbit  #(8) MUX_memory(.a(EX_MEM_ALU_out[7:0]), .b(PC_out[7:0]), .sel(sclk), .out(mem_in));
 
 Memory Mem(.sclk(sclk), .mem_read(EX_MEM_mem_read), .mem_write(EX_MEM_mem_write), .AU_inst_sel(EX_MEM_AU_inst_sel), 
             .signed_inst(EX_MEM_signed_inst),.addr(mem_in), .data_in(EX_MEM_read_data2), .data_out(mem_out)); 
+            
+Decompression_Unit DU (.rst(rst),.clk(clk), .instruction(mem_out), .new_inst(uncomp_inst),.terminate(terminate),.comp(comp));
+ 
 ////////////////////////// IR ends ////////////////////////////////////////////////////////////////////////////////////////
 
-register_nbit #(96) IF_ID (~sclk, rst,`ONE,
-    {PC_4, PC_out, mem_out},
+register_nbit #(96) IF_ID (~sclk, rst,~terminate,
+    {PC_4, PC_out, uncomp_inst},
     {IF_ID_PC_4, IF_ID_PC_out, IF_ID_inst}
     );
 
