@@ -27,12 +27,12 @@ wire jump, branch, mem_read, mem_to_reg, mem_write, ALU_src, reg_write, signed_i
 wire [1:0] RF_MUX_sel;
 wire [31:0] mem_MUX_out;
 wire [1:0] AU_inst_sel;
-wire [1:0] ALU_Op;
+wire [2:0] ALU_Op;
 wire [31:0] write_data;
 wire [31:0] read_data1, read_data2;
 wire [31:0] gen_out;
 wire [31:0] ALU_second_input;
-wire [3:0] ALU_selection; 
+wire [4:0] ALU_selection; 
 wire [31:0] ALU_out;
 wire Z, V, C, S;
 wire branch_decision;
@@ -50,7 +50,7 @@ wire [31:0] IF_ID_inst;
 
 wire ID_EX_branch, ID_EX_jump, ID_EX_mem_read, ID_EX_mem_to_reg, ID_EX_mem_write, ID_EX_ALU_Src, ID_EX_reg_write, ID_EX_signed_inst;
 wire [1:0] ID_EX_AU_inst_sel;
-wire [1:0] ID_EX_ALU_Op;
+wire [2:0] ID_EX_ALU_Op;
 wire [1:0] ID_EX_RF_MUX_sel;
 wire [31:0] ID_EX_read_data1;
 wire [31:0] ID_EX_read_data2;
@@ -123,7 +123,7 @@ register_file_nbit #(32) RF( .rst(rst),  .clk(~sclk), .read_reg1(IF_ID_inst[19:1
 ImmGen IG(.IR(IF_ID_inst), .Imm(gen_out));
 ///////////////////////// ID ends ////////////////////////////////////////////////////////////////////////////////////////
 
-register_nbit #(216) ID_EX (sclk, rst,`ONE,
+register_nbit #(217) ID_EX (sclk, rst,`ONE,
     {branch, jump, mem_read, mem_to_reg, mem_write, ALU_src, reg_write, signed_inst, AU_inst_sel, ALU_Op, RF_MUX_sel,
     IF_ID_PC_4, IF_ID_PC_out, read_data1, read_data2, gen_out, IF_ID_inst, IF_ID_inst[19:15], IF_ID_inst[24:20]},
     {ID_EX_branch, ID_EX_jump, ID_EX_mem_read, ID_EX_mem_to_reg, ID_EX_mem_write, ID_EX_ALU_Src, ID_EX_reg_write, 

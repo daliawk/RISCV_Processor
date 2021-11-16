@@ -100,7 +100,7 @@ output S
             `ALU_MULHU: // multiplies 2 unsigned operands rs1 and rs2 and stores the upper 32 bits in rd.
                 ALUout = (A * B) >> 32;
 
-            `ALU_DIV:  // 
+            `ALU_DIV:  // divides two signed operands while taking into account the exceptions
                 begin
                     if(B == 32'b0)
                         ALUout = -32'd1;
@@ -112,14 +112,14 @@ output S
                                 ALUout = $signed(A) / $signed(B);
                         end
                 end
-            `ALU_DIVU: // 
+            `ALU_DIVU: // divides two unsigned operands while taking into account the exceptions
                 begin
                     if(B == 32'b0)
                         ALUout = 32'd4294967295;
                     else
                         ALUout = A / B;
                 end
-            `ALU_REM: // 
+            `ALU_REM: // gets the remainder of two signed operands while taking into account the exceptions
                 begin
                     if(B == 32'b0)
                         ALUout = A;
@@ -131,7 +131,7 @@ output S
                                 ALUout = $signed(A) % $signed(B);
                         end
                 end
-            `ALU_REMU: // 
+            `ALU_REMU: // gets the remainder of two unsigned operands while taking into account the exceptions
                 begin
                     if(B == 32'b0)
                         ALUout = A;
