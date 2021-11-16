@@ -128,7 +128,19 @@ module Memory(
    {mem[55], mem[54], mem[53], mem[52]}=32'h0251e733 ; //REM x14, x3, x5
    {mem[59], mem[58], mem[57], mem[56]}=32'h025177b3 ; //REMU x15, x2, x5
    {mem[63], mem[62], mem[61], mem[60]}=32'h0242e833 ; //REM x16, x5, x4
-   
+     {mem[67], mem[66], mem[65], mem[64]}=32'h10900893 ; //addi x17, x0, 265
+     {mem[71], mem[70], mem[69], mem[68]}=32'h10900913; //addi x18, x0, 265
+     {mem[75], mem[74], mem[73], mem[72]}=32'h032889b3 ; //MUL x19, x17, x18
+     {mem[79], mem[78], mem[77], mem[76]}=32'h03289a33 ; //MULH x20, x17, x18
+     {mem[83], mem[82], mem[81], mem[80]}=32'h0200dab3 ; //DIVU x21, x1, x0
+     {mem[87], mem[86], mem[85], mem[84]}=32'h02017b33 ; //REMU x22, x2, x0
+     
+     {mem[91], mem[90], mem[89], mem[88]}=32'h07002b83 ; //lw x23, 112(x0)
+     {mem[95], mem[94], mem[93], mem[92]}=32'hfff00c13 ; //addi x24, x0, -1
+     {mem[99], mem[98], mem[97], mem[96]}=32'h038bccb3 ; //DIV x25, x23, x24
+     {mem[103], mem[102], mem[101], mem[100]}=32'h038bed33; //REM x26, x23, x24
+     {mem[107], mem[106], mem[105], mem[104]}=32'h038bddb3; //DIVU x27, x23, x24
+     {mem[111], mem[110], mem[109], mem[108]}=32'h038bfe33; //REMU x28, x23, x24
      // Test case 4
 //     inst_mem[0]=32'h00800083; // lb x1 8(x0)
 //     inst_mem[1]=32'h0805103; // lhu x2 8(x0)
@@ -140,18 +152,22 @@ module Memory(
 //     inst_mem[7]=32'h0000073; // ecall
 //     inst_mem[8]=32'h0000033; // add x0 x0 x0
 
-     mem[100]=8'd17; 
-     mem[101]=8'd0; 
-     mem[102]=8'd0; 
-     mem[103]=8'd0; 
-     mem[104]=8'd9;
-     mem[105]=8'd0; 
-     mem[106]=8'd0; 
-     mem[107]=8'd0; 
-     mem[108]=8'd25;
-     mem[109]=8'd0; 
-     mem[110]=8'd0; 
-     mem[111]=8'd0;  
+//     mem[100]=8'd17; 
+//     mem[101]=8'd0; 
+//     mem[102]=8'd0; 
+//     mem[103]=8'd0; 
+//     mem[104]=8'd9;
+//     mem[105]=8'd0; 
+//     mem[106]=8'd0; 
+//     mem[107]=8'd0; 
+//     mem[108]=8'd25;
+//     mem[109]=8'd0; 
+//     mem[110]=8'd0; 
+     
+     mem[112]=8'd0;
+     mem[113] = 8'd0;
+     mem[114] = 8'd0;
+     mem[115] = 8'b10000000;
      
      offset = 8'd100;
    
