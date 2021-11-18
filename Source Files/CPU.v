@@ -142,10 +142,10 @@ register_nbit #(217) ID_EX (sclk, rst,`ONE,
 ///////////////////////// EX begins ////////////////////////////////////////////////////////////////////////////////////////
 Forwarding_Unit forward_unit(.ID_EX_RegisterRs1(ID_EX_Rs1), .ID_EX_RegisterRs2(ID_EX_Rs2), 
                              .MEM_WB_RegWrite(MEM_WB_reg_write), .MEM_WB_RegisterRd(MEM_WB_write_reg), 
-                             .forwardA(forwardA), .forwardB(forwardB));
+                             .forwardA_ALU(forwardA_ALU), .forwardB_ALU(forwardB_ALU), .forwardA_branch(forwardA_branch), .forwardB_branch(forwardB_branch));
 
-MUX_2x1_nbit  #(32) MUX_ForwardA(.a(ID_EX_read_data1), .b(write_data), .sel(forwardA), .out(forwarded_A));
-MUX_2x1_nbit  #(32) MUX_ForwardB(.a(ID_EX_read_data2), .b(write_data), .sel(forwardB), .out(forwarded_B));
+MUX_2x1_nbit  #(32) MUX_ForwardA(.a(ID_EX_read_data1), .b(write_data), .sel(forwardA_ALU), .out(forwarded_A_ALU));
+MUX_2x1_nbit  #(32) MUX_ForwardB(.a(ID_EX_read_data2), .b(write_data), .sel(forwardB_ALU), .out(forwarded_B_ALU));
 
 MUX_2x1_nbit  #(32) MUX_RF(.a(forwarded_B), .b(ID_EX_gen_out), .sel(ID_EX_ALU_Src), .out(ALU_second_input));
 

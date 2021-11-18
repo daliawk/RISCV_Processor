@@ -65,7 +65,7 @@ output reg [4:0] ALU_selection
                 3'b111:
                     ALU_selection = `ALU_AND;
                 default:
-                    ALU_selection = 4'b0000;
+                    ALU_selection = 5'b00000;
         endcase
         end
     
@@ -112,7 +112,7 @@ output reg [4:0] ALU_selection
             3'b111: 
                 ALU_selection = `ALU_AND;
             default:
-                    ALU_selection = 4'b0000;    
+                    ALU_selection = 5'b00000;    
         endcase     
         end
 
@@ -139,7 +139,7 @@ output reg [4:0] ALU_selection
                 `F3_REMU: 
                     ALU_selection = `ALU_REMU;
                 default:
-                    ALU_selection = 4'b0000;
+                    ALU_selection = 5'b00000;
             endcase
         end
     default: ALU_selection = `ALU_ADD;
