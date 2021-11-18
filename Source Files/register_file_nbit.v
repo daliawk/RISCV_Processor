@@ -46,7 +46,7 @@ module  register_file_nbit #(parameter n=32)(
     
     genvar i;
     for(i=1; i<32; i=i+1) begin: loop1
-        register_nbit #(n) reg0 (.clk(clk), .rst(rst), .load(load[i]), .D(write_data), .Q(Q[i]));
+        register_nbit #(n) reg0 (.clk(~clk), .rst(rst), .load(load[i]), .D(write_data), .Q(Q[i]));
     end
     
 endmodule
