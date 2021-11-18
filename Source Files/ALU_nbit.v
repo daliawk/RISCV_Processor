@@ -29,7 +29,7 @@ output S
     wire [n-1:0] summed;
     wire [n-1:0] subbed;
     wire [n-1:0] modedB;
-    wire [(n+n-1):0] mul;
+    reg [(n+n-1):0] mul;
     
     wire cout;
     MUX_2x1_nbit #(n) addsub ( B, ~B,alu_control[0], modedB);
@@ -94,8 +94,10 @@ output S
             `ALU_MULH: // multiplies 2 signed operands rs1 and rs2 and stores the upper 32 bits in rd.
                 ALUout = ($signed(A) * $signed(B)) >>> 32;
 
-            `ALU_MULHSU: // multiplies signed operand rs1 and unsigned r operands2 and stores the upper 32 bits in rd.
-                ALUout = ($signed(A) * B) >>> 32;
+            `ALU_MULHSU: begin // multiplies signed operand rs1 and unsigned r operands2 and stores the upper 32 bits in rd.
+                mul = ($signed(A) * $signed({1'b0, B}));
+                ALUout =  mul[(n+n-1):n];
+             end
 
             `ALU_MULHU: // multiplies 2 unsigned operands rs1 and rs2 and stores the upper 32 bits in rd.
                 ALUout = (A * B) >> 32;
