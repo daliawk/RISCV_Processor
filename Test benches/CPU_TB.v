@@ -33,7 +33,7 @@ reg rst;
     
     initial begin
     rst = 1;
-    #10
+    #9
     rst = 0;
     #100;
     

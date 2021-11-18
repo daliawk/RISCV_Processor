@@ -15,9 +15,15 @@
 
 
 
-module CPU(
+module CPU_FPGA_Test(
     input clk, 
-    input rst
+    input rst,
+    input clkSSD, 
+    //input [1:0] ledSel, 
+    input [3:0] ssdSel, 
+    output [15:0] LEDs,
+    output  [3:0] Anode, 
+    output [6:0] LED_out
 );
 
 wire [31:0] PC_out;
@@ -85,6 +91,9 @@ wire [31:0] forwarded_B_branch;
 wire terminate;
 wire comp;
 wire [31:0] uncomp_inst;
+
+reg [12:0] num;
+
 always@(posedge clk, posedge rst)
 begin 
     if(rst)
@@ -192,6 +201,46 @@ register_nbit #(200) MEM_WB (sclk, rst,`ONE,
 three_input_Mux_nbit RF_MUX(.a(MEM_WB_mem_MUX_out), .b(MEM_WB_b_add_out), .c(MEM_WB_PC_next), .out(write_data), .sel(MEM_WB_RF_MUX_sel));
 ///////////////////// WB ends //////////////////////////////////////////////////////////////////
 
+
+////////// Connecting wires to the FPGA
+//always@(*) begin
+//case(ledSel)
+
+//2'b00: LEDs = mem_out[15:0];
+
+//2'b01: LEDs = mem_out[31:16];
+
+//2'b10: LEDs = {2'b0, MemWrite, MemRead, branch, jump, EX_MEM_mem_to_reg, MEM_WB_reg_write};
+
+//default: LEDs = 0;
+//endcase
+
+assign LEDs = {8'b0, MEM_WB_RF_MUX_sel, EX_MEM_mem_write, EX_MEM_mem_read, EX_MEM_mem_to_reg, branch, jump, MEM_WB_reg_write, comp};
+
+always@(*) begin
+case(ssdSel)
+4'b0000: num = PC_out[12:0];
+4'b0001: num = PC_next[12:0];
+4'b0010: num = PC_input[12:0];
+4'b0011: num = {5'b0,mem_in}; 
+//4'b0100: num = mem_out[12:0];
+//4'b0101: num = uncomp_inst[12:0];
+//4'b0110: num = gen_out[12:0];
+4'b0100: num = forwarded_A_ALU[12:0];
+4'b0101: num = ALU_second_input[12:0];
+4'b0110: num = ALU_out [12:0];
+4'b0111: num = write_data[12:0];
+4'b1000: num = MEM_WB_mem_MUX_out[12:0];
+4'b1001: num = MEM_WB_b_add_out[12:0];
+4'b1010: num = MEM_WB_PC_next[12:0];
+4'b1011: num = mem_MUX_out[12:0];
+
+
+default: num = 0;
+endcase
+end
+
+Seven_Segment_Display ssd(clkSSD, num,Anode,LED_out);
 
 
 endmodule

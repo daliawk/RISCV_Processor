@@ -87,7 +87,7 @@ output reg [6:0] led_out
         endcase 
     end 
     
-    genvar i; 
+    integer i; 
     always @(num) 
     begin 
         //initialization 

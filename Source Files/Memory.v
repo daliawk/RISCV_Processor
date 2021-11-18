@@ -24,7 +24,7 @@ module Memory(
      output reg [31:0] data_out
      ); 
     
-    reg [7:0] mem [0:255]; //Memory that has 64 slots, each slot 8 bits in width.
+    reg [7:0] mem [0:200]; //Memory that has 64 slots, each slot 8 bits in width.
     reg [7:0] offset;
     
     initial begin
@@ -224,7 +224,7 @@ module Memory(
      mem[114] = 8'd0;
      mem[115] = 8'b10000000;
      
-     offset = 8'd000;
+     offset = 8'd100;
    
     end    
     
