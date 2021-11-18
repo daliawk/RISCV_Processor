@@ -9,7 +9,7 @@
 * 
 * Description: The top module for the RISC-V processor
 *
-* Change history: 10/25/21 - “ Modified file to follow code guidelines 
+* Change history: 10/25/21 - ï¿½ Modified file to follow code guidelines 
 * 
 **********************************************************************/ 
 
@@ -120,11 +120,11 @@ register_file_nbit #(32) RF( .rst(rst),  .clk(~sclk), .read_reg1(IF_ID_inst[19:1
 
 ImmGen IG(.IR(IF_ID_inst), .Imm(gen_out));
 
-// Branching
+// Forwarding to branch
 MUX_2x1_nbit  #(32) MUX_branch_A(.a(read_data1), .b(mem_MUX_out), .sel(forwardA_branch), .out(forwarded_A_branch));
 MUX_2x1_nbit  #(32) MUX_branch_B(.a(read_data2), .b(mem_MUX_out), .sel(forwardB_branch), .out(forwarded_B_branch));
 
-
+// Branching
 branching_unit BU(.B(branch), .jump(jump), .funct3(IF_ID_inst[14:12]), .data1(forwarded_A_branch), 
                     .data2(forwarded_B_branch), .decision(branch_decision));
                     
