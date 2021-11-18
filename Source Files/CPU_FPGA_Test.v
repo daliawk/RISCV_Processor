@@ -220,21 +220,16 @@ assign LEDs = {8'b0, MEM_WB_RF_MUX_sel, EX_MEM_mem_write, EX_MEM_mem_read, EX_ME
 always@(*) begin
 case(ssdSel)
 4'b0000: num = PC_out[12:0];
-4'b0001: num = PC_next[12:0];
-4'b0010: num = PC_input[12:0];
-4'b0011: num = {5'b0,mem_in}; 
+//4'b0001: num = PC_next[12:0];
+4'b0001: num = PC_input[12:0];
+4'b0010: num = {5'b0,mem_in}; 
 //4'b0100: num = mem_out[12:0];
 //4'b0101: num = uncomp_inst[12:0];
 //4'b0110: num = gen_out[12:0];
-4'b0100: num = forwarded_A_ALU[12:0];
-4'b0101: num = ALU_second_input[12:0];
-4'b0110: num = ALU_out [12:0];
-4'b0111: num = write_data[12:0];
-4'b1000: num = MEM_WB_mem_MUX_out[12:0];
-4'b1001: num = MEM_WB_b_add_out[12:0];
-4'b1010: num = MEM_WB_PC_next[12:0];
-4'b1011: num = mem_MUX_out[12:0];
-
+4'b0011: num = forwarded_A_ALU[12:0];
+4'b0100: num = ALU_second_input[12:0];
+4'b0101: num = ALU_out [12:0];
+4'b0110: num = write_data[12:0];
 
 default: num = 0;
 endcase

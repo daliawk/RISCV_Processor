@@ -27,7 +27,7 @@ reg rst;
     
     
     always begin
-    clk = 0;
+    clk = 1;
     forever #10 clk = ~clk;
     end
     
