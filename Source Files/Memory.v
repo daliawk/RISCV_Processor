@@ -28,6 +28,7 @@ module Memory(
     reg [7:0] offset;
     
     initial begin
+    
 //     mem[0]=32'b000000000000_00000_010_00001_0000011   ;  //lw x1, 0(x0)
 //     mem[1]=32'b000000000100_00000_010_00010_0000011   ;  //lw x2, 4(x0)
 //     mem[2]=32'b000000001000_00000_010_00011_0000011   ;  //lw x3, 8(x0)
@@ -206,35 +207,35 @@ module Memory(
 ////     inst_mem[8]=32'h0000033; // add x0 x0 x0
 
 //Comprehensive Test Case
- {mem[3], mem[2], mem[1], mem[0]}=32'h00000033 ; //add x0, x0, x0
- {mem[7], mem[6], mem[5], mem[4]}=32'hffe08113 ; //addi x2, x1, -2
- {mem[11], mem[10], mem[9], mem[8]}=32'h00a10113 ; //addi x2 x2 10
- {mem[15], mem[14], mem[13], mem[12]}=32'h00100093 ; //addi x1, x0, 1
- {mem[19], mem[18], mem[17], mem[16]}=32'h00100023 ; //sb x1 0(x0)
- {mem[23], mem[22], mem[21], mem[20]}=32'h00809093;  //slli x1 x1 8
- {mem[27], mem[26], mem[25], mem[24]}=32'h001000a3 ; //sb x1, 1(x0)
- {mem[31], mem[30], mem[29], mem[28]}=32'h00101123 ; //	sh x1 2(x0)
- {mem[35], mem[34], mem[33], mem[32]}=32'h00809093 ; //slli x1, x1, 8
-   {mem[39], mem[38], mem[37], mem[36]}=32'h00101223 ; //sh x1, 4(x0)
-   {mem[43], mem[42], mem[41], mem[40]}=32'h00102323 ; //sw x1, 6(x0)
-   {mem[47], mem[46], mem[45], mem[44]}=32'h00000103 ; //lb x2, 0(x0)
-   {mem[51], mem[50], mem[49], mem[48]}=32'h00100183 ; //lb x3, 1(x0)
-   {mem[55], mem[54], mem[53], mem[52]}=32'h00201103 ; //lh x2, 2(x0)
-   {mem[59], mem[58], mem[57], mem[56]}=32'h00401183 ; //lh x3, 4(x0)
-   {mem[63], mem[62], mem[61], mem[60]}=32'h00602183 ; //lw x3, 6(x0)
-   {mem[67], mem[66], mem[65], mem[64]}=32'hfff00093 ; //addi x1, x0, -1
-    {mem[71], mem[70], mem[69], mem[68]}=32'h00102523; // sw x1, 10(x0)
-    {mem[75], mem[74], mem[73], mem[72]}=32'h00a00103 ; //lb x2, 10(x0)
-     {mem[67], mem[66], mem[65], mem[64]}=32'h00a04183 ; //lbu x3, 10(x0)
-     {mem[71], mem[70], mem[69], mem[68]}=32'h00a01203; //lh x4, 10(x0)
-     {mem[75], mem[74], mem[73], mem[72]}=32'h00a05203 ; //lhu x4, 10(x0)
-     {mem[79], mem[78], mem[77], mem[76]}=32'h00000073 ; //ecall
+// {mem[3], mem[2], mem[1], mem[0]}=32'h00000033 ; //add x0, x0, x0
+// {mem[7], mem[6], mem[5], mem[4]}=32'hffe08113 ; //addi x2, x1, -2
+// {mem[11], mem[10], mem[9], mem[8]}=32'h00a10113 ; //addi x2 x2 10
+// {mem[15], mem[14], mem[13], mem[12]}=32'h00100093 ; //addi x1, x0, 1
+// {mem[19], mem[18], mem[17], mem[16]}=32'h00100023 ; //sb x1 0(x0)
+// {mem[23], mem[22], mem[21], mem[20]}=32'h00809093;  //slli x1 x1 8
+// {mem[27], mem[26], mem[25], mem[24]}=32'h001000a3 ; //sb x1, 1(x0)
+// {mem[31], mem[30], mem[29], mem[28]}=32'h00101123 ; //	sh x1 2(x0)
+// {mem[35], mem[34], mem[33], mem[32]}=32'h00809093 ; //slli x1, x1, 8
+//   {mem[39], mem[38], mem[37], mem[36]}=32'h00101223 ; //sh x1, 4(x0)
+//   {mem[43], mem[42], mem[41], mem[40]}=32'h00102323 ; //sw x1, 6(x0)
+//   {mem[47], mem[46], mem[45], mem[44]}=32'h00000103 ; //lb x2, 0(x0)
+//   {mem[51], mem[50], mem[49], mem[48]}=32'h00100183 ; //lb x3, 1(x0)
+//   {mem[55], mem[54], mem[53], mem[52]}=32'h00201103 ; //lh x2, 2(x0)
+//   {mem[59], mem[58], mem[57], mem[56]}=32'h00401183 ; //lh x3, 4(x0)
+//   {mem[63], mem[62], mem[61], mem[60]}=32'h00602183 ; //lw x3, 6(x0)
+//   {mem[67], mem[66], mem[65], mem[64]}=32'hfff00093 ; //addi x1, x0, -1
+//    {mem[71], mem[70], mem[69], mem[68]}=32'h00102523; // sw x1, 10(x0)
+//    {mem[75], mem[74], mem[73], mem[72]}=32'h00a00103 ; //lb x2, 10(x0)
+//     {mem[67], mem[66], mem[65], mem[64]}=32'h00a04183 ; //lbu x3, 10(x0)
+//     {mem[71], mem[70], mem[69], mem[68]}=32'h00a01203; //lh x4, 10(x0)
+//     {mem[75], mem[74], mem[73], mem[72]}=32'h00a05203 ; //lhu x4, 10(x0)
+//     {mem[79], mem[78], mem[77], mem[76]}=32'h00000073 ; //ecall
 
-     mem[100]=8'd17; 
+     mem[100]=8'd16; 
      mem[101]=8'd0; 
      mem[102]=8'd0; 
      mem[103]=8'd0; 
-     mem[104]=8'd9;
+     mem[104]=8'd5;
      mem[105]=8'd0; 
      mem[106]=8'd0; 
      mem[107]=8'd0; 
@@ -250,6 +251,49 @@ module Memory(
      mem[115] = 8'b10000000;
      
      offset = 8'd100;
+   
+   
+   
+   
+   
+   // compressed instruction test case
+   
+   
+  {mem[1], mem[0]} = 16'b100_1_00000_00000_10;   // add  x0, x0, x0     zeroing x0
+   
+   {mem[3], mem[2]} = 16'b010_000_000_00_010_00;    // lw   x2, 0(x0)      loading 16 to x2
+   {mem[5], mem[4]} = 16'b010_000_000_10_011_00;    // lw   x3, 4(x0)     loading 5 in x3
+   
+   
+   {mem[7], mem[6]} = 16'b001_00000001000_01;    // jal  L1
+   {mem[11], mem[10],mem[9], mem[8]} = 32'b0000000_00000_00010_000_01010_1100011;    // beq  x2, x0, L2     shouldn't initially branch
+       // L1: 
+   {mem[13], mem[12]} = 16'b000_1_00010_11110_01;    // addi x2, x2, -2       should have 14 in x2
+   {mem[15], mem[14]} = 16'b100_0_00_011_00001_01;   // srli x3, x3, 1     should have 2 in x3
+   {mem[17], mem[16]} = 16'b000_0_00011_00010_10;    // slli x3, x3, 2     should have 8 in x3
+   {mem[19], mem[18]} = 16'b100_0_01_011_00001_01;    // srai x3, x3, 1        should have 4 in x3
+   
+   {mem[21], mem[20]} = 16'b100_0_11_010_00_011_01;    // sub  x2, x2, x3     should have 10 in x2
+   {mem[23], mem[22]} = 16'b100_0_10_010_00010_01;    // andi x2, x2, 2     should have 2 in x2
+   {mem[25], mem[24]} = 16'b100_0_11_010_01_010_01;    // xor  x2, x2, x2      should have 0 in x2
+   {mem[27], mem[26]} = 16'b100_1_00001_00000_10;    // jalr x1         should jump back to beq
+   
+   {mem[29], mem[28]} = 16'b000_0_00010_00101_01;    // addi x2, x2, 5       should have 5 in x2
+   
+       // L2:
+   {mem[31], mem[30]} = 16'b100_0_11_011_10_000_01;    // or   x3, x3, x0     should have 4 in x3
+   {mem[33], mem[32]} = 16'b100_0_11_011_11_000_01;    // and  x3, x3, x0     should have 0 in x3
+   {mem[35], mem[34]} = 16'b011_0_00011_00001_01;  // lui  x3, x3, 1     should have 4096 in x3
+   {mem[37], mem[36]} = 16'b110_001_011_10_000_00;    // sw   x3, 12(x0)     should have 4096 in memory at offset 12
+   {mem[38], mem[38]} = 16'b100_1_00000_00000_10;    //ecall
+   
+   
+   
+   
+   
+   
+   
+   
    
     end    
     
