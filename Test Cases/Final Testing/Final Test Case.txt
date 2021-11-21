@@ -26,15 +26,15 @@ lbu x3, 10(x0)
 lh x4, 10(x0)
 lhu x4, 10(x0)
 
+ecall
 
+//////////////////////////////////////////////////////////
 # Testing LUI
 lui x1, 1
 
 #Testing AUIPC
 auipc x2, 2
 
-#Testing JAL
-jal x2, test_jal
 
 #Testing BEQ
 beq x2, x0, fail
@@ -72,10 +72,22 @@ blt_signed_correct:
 bge x0, x2, fail
 bgeu x0, x2, fail
 bge x2, x0, bge_c
+fail:
 ecall
 
 bge_c:
+#Testing xori, andi, ori
+addi x2, x0, 2
+ori x3, x2, 1
+xori x4, x3, 6
+andi x5, x3, 6 
+ecall
+
+/////////////////////////////////////////////////////////////
+
 #Checking bgeu
+addi x2, x0, 2
+addi x1, x0, -1
 bgeu x2, x0, bgeu_c
 ecall
 
@@ -95,6 +107,9 @@ bgeu x0, x0, bgeu_e_c
 ecall
 
 bgeu_e_c:
+#Testing JAL
+jal x2, test_jal
+
 
 #Testing slti & sltui
 addi x1, x0, -1
@@ -110,11 +125,7 @@ slt x5, x3, x1
 sltu x6, x3, x1
 
 
-#Testing xori, andi, ori
-addi x2, x0, 2
-ori x3, x2, 1
-xori x4, x3, 6
-andi x5, x3, 6 
+
 
 #Testing slli, srli, and srai
 addi x1, x0, 5

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="CPU_TB_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="CPU_TB" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="401629073fs"></ZoomStartTime>
+      <ZoomEndTime time="1119674186fs"></ZoomEndTime>
+      <Cursor1Time time="1000000000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="131"></NameColumnWidth>
+      <ValueColumnWidth column_width="128"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="15" />
+   <wvobject fp_name="/CPU_TB/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/PC_out" type="array">
+      <obj_property name="ElementShortName">PC_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PC_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/PC_input" type="array">
+      <obj_property name="ElementShortName">PC_input[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PC_input[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/comp" type="logic">
+      <obj_property name="ElementShortName">comp</obj_property>
+      <obj_property name="ObjectShortName">comp</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/mem_in" type="array">
+      <obj_property name="ElementShortName">mem_in[7:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_in[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/EX_MEM_mem_read" type="logic">
+      <obj_property name="ElementShortName">EX_MEM_mem_read</obj_property>
+      <obj_property name="ObjectShortName">EX_MEM_mem_read</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/EX_MEM_mem_write" type="logic">
+      <obj_property name="ElementShortName">EX_MEM_mem_write</obj_property>
+      <obj_property name="ObjectShortName">EX_MEM_mem_write</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/EX_MEM_mem_to_reg" type="logic">
+      <obj_property name="ElementShortName">EX_MEM_mem_to_reg</obj_property>
+      <obj_property name="ObjectShortName">EX_MEM_mem_to_reg</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/branch" type="logic">
+      <obj_property name="ElementShortName">branch</obj_property>
+      <obj_property name="ObjectShortName">branch</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/jump" type="logic">
+      <obj_property name="ElementShortName">jump</obj_property>
+      <obj_property name="ObjectShortName">jump</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/forwarded_A_ALU" type="array">
+      <obj_property name="ElementShortName">forwarded_A_ALU[31:0]</obj_property>
+      <obj_property name="ObjectShortName">forwarded_A_ALU[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/ALU_second_input" type="array">
+      <obj_property name="ElementShortName">ALU_second_input[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ALU_second_input[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/write_data" type="array">
+      <obj_property name="ElementShortName">write_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">write_data[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/CPU_TB/cpu/MEM_WB_reg_write" type="logic">
+      <obj_property name="ElementShortName">MEM_WB_reg_write</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_reg_write</obj_property>
+   </wvobject>
+</wave_config>

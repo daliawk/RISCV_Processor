@@ -71,13 +71,8 @@ output S
 
             `ALU_SLT: // setting on less than unsigned 
                 begin 
-                    if(A[n-1]& !B[n-1])
-                        ALUout = {31'b0,1'b1};
-                    else 
-                    if (A<B)
-                        ALUout = {31'b0,1'b1};
-                    else
-                        ALUout = 32'b0;
+                    ALUout = ($signed(A) < $signed(B));
+
                 end
 
             `ALU_SLTU: // set on less than unsigned  

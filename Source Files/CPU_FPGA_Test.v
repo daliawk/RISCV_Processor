@@ -160,7 +160,7 @@ register_nbit #(206) ID_EX (sclk, rst,`ONE,
 ///////////////////////// EX begins ////////////////////////////////////////////////////////////////////////////////////////
 Forwarding_Unit forward_unit(.ID_EX_RegisterRs1(ID_EX_inst[19:15]), .ID_EX_RegisterRs2(ID_EX_inst[24:20]), .IF_ID_RegisterRs1(IF_ID_inst[19:15]),
                              .IF_ID_RegisterRs2(IF_ID_inst[24:20]), .MEM_WB_RegWrite(MEM_WB_reg_write), .EX_MEM_RegWrite(EX_MEM_reg_write),
-                             .MEM_WB_RegisterRd(MEM_WB_write_reg), .EX_MEM_RegisterRd(EX_MEM_write_reg),
+                             .MEM_WB_RegisterRd(MEM_WB_write_reg), .EX_MEM_RegisterRd(EX_MEM_write_reg), 
                              .forwardA_ALU(forwardA_ALU), .forwardB_ALU(forwardB_ALU), .forwardA_branch(forwardA_branch), .forwardB_branch(forwardB_branch));
 
 MUX_2x1_nbit  #(32) MUX_ForwardA(.a(ID_EX_read_data1), .b(write_data), .sel(forwardA_ALU), .out(forwarded_A_ALU));
