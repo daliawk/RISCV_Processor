@@ -207,35 +207,114 @@ module Memory(
 ////     inst_mem[8]=32'h0000033; // add x0 x0 x0
 
 //Comprehensive Test Case
-// {mem[3], mem[2], mem[1], mem[0]}=32'h00000033 ; //add x0, x0, x0
-// {mem[7], mem[6], mem[5], mem[4]}=32'hffe08113 ; //addi x2, x1, -2
-// {mem[11], mem[10], mem[9], mem[8]}=32'h00a10113 ; //addi x2 x2 10
-// {mem[15], mem[14], mem[13], mem[12]}=32'h00100093 ; //addi x1, x0, 1
-// {mem[19], mem[18], mem[17], mem[16]}=32'h00100023 ; //sb x1 0(x0)
-// {mem[23], mem[22], mem[21], mem[20]}=32'h00809093;  //slli x1 x1 8
-// {mem[27], mem[26], mem[25], mem[24]}=32'h001000a3 ; //sb x1, 1(x0)
-// {mem[31], mem[30], mem[29], mem[28]}=32'h00101123 ; //	sh x1 2(x0)
-// {mem[35], mem[34], mem[33], mem[32]}=32'h00809093 ; //slli x1, x1, 8
-//   {mem[39], mem[38], mem[37], mem[36]}=32'h00101223 ; //sh x1, 4(x0)
-//   {mem[43], mem[42], mem[41], mem[40]}=32'h00102323 ; //sw x1, 6(x0)
-//   {mem[47], mem[46], mem[45], mem[44]}=32'h00000103 ; //lb x2, 0(x0)
-//   {mem[51], mem[50], mem[49], mem[48]}=32'h00100183 ; //lb x3, 1(x0)
-//   {mem[55], mem[54], mem[53], mem[52]}=32'h00201103 ; //lh x2, 2(x0)
-//   {mem[59], mem[58], mem[57], mem[56]}=32'h00401183 ; //lh x3, 4(x0)
-//   {mem[63], mem[62], mem[61], mem[60]}=32'h00602183 ; //lw x3, 6(x0)
-//   {mem[67], mem[66], mem[65], mem[64]}=32'hfff00093 ; //addi x1, x0, -1
-//    {mem[71], mem[70], mem[69], mem[68]}=32'h00102523; // sw x1, 10(x0)
-//    {mem[75], mem[74], mem[73], mem[72]}=32'h00a00103 ; //lb x2, 10(x0)
-//     {mem[67], mem[66], mem[65], mem[64]}=32'h00a04183 ; //lbu x3, 10(x0)
-//     {mem[71], mem[70], mem[69], mem[68]}=32'h00a01203; //lh x4, 10(x0)
-//     {mem[75], mem[74], mem[73], mem[72]}=32'h00a05203 ; //lhu x4, 10(x0)
-//     {mem[79], mem[78], mem[77], mem[76]}=32'h00000073 ; //ecall
+ {mem[3], mem[2], mem[1], mem[0]}=32'h00000033 ; //add x0, x0, x0
+ {mem[7], mem[6], mem[5], mem[4]}=32'hffe08113 ; //addi x2, x1, -2
+ {mem[11], mem[10], mem[9], mem[8]}=32'h00a10113 ; //addi x2 x2 10
+ {mem[15], mem[14], mem[13], mem[12]}=32'h00100093 ; //addi x1, x0, 1
+ {mem[19], mem[18], mem[17], mem[16]}=32'h00100023 ; //sb x1 0(x0)
+ {mem[23], mem[22], mem[21], mem[20]}=32'h00809093;  //slli x1 x1 8
+ {mem[27], mem[26], mem[25], mem[24]}=32'h001000a3 ; //sb x1, 1(x0)
+ {mem[31], mem[30], mem[29], mem[28]}=32'h00101123 ; //	sh x1 2(x0)
+ {mem[35], mem[34], mem[33], mem[32]}=32'h00809093 ; //slli x1, x1, 8
+   {mem[39], mem[38], mem[37], mem[36]}=32'h00101223 ; //sh x1, 4(x0)
+   {mem[43], mem[42], mem[41], mem[40]}=32'h00102323 ; //sw x1, 6(x0)
+   {mem[47], mem[46], mem[45], mem[44]}=32'h00000103 ; //lb x2, 0(x0)
+   {mem[51], mem[50], mem[49], mem[48]}=32'h00100183 ; //lb x3, 1(x0)
+   {mem[55], mem[54], mem[53], mem[52]}=32'h00201103 ; //lh x2, 2(x0)
+   {mem[59], mem[58], mem[57], mem[56]}=32'h00401183 ; //lh x3, 4(x0)
+   {mem[63], mem[62], mem[61], mem[60]}=32'h00602183 ; //lw x3, 6(x0)
+   {mem[67], mem[66], mem[65], mem[64]}=32'hfff00093 ; //addi x1, x0, -1
+    {mem[71], mem[70], mem[69], mem[68]}=32'h00102523; // sw x1, 10(x0)
+    {mem[75], mem[74], mem[73], mem[72]}=32'h00a00103 ; //lb x2, 10(x0)
+     {mem[67], mem[66], mem[65], mem[64]}=32'h00a04183 ; //lbu x3, 10(x0)
+     {mem[71], mem[70], mem[69], mem[68]}=32'h00a01203; //lh x4, 10(x0)
+     {mem[75], mem[74], mem[73], mem[72]}=32'h00a05203 ; //lhu x4, 10(x0)
+    
+         {mem[79],mem[78],mem[77],mem[76]} = 32'h000010b7; // lui x1 1
+         {mem[83],mem[82],mem[81],mem[80]} = 32'h00002117; // auipc x2 2	
+         {mem[87],mem[86],mem[85],mem[84]} = 32'h12c0016f; // jal x2 300	
+         {mem[91],mem[90],mem[89],mem[88]} = 32'h12010663; // beq x2 x0 300	
+         {mem[95],mem[94],mem[93],mem[92]} = 32'h00210463; // beq x2 x2 8	
+         {mem[99],mem[98],mem[97],mem[96]} = 32'h00000073; // ecall	
+     {mem[103],mem[102],mem[101],mem[100]} = 32'h12211063; // bne x2 x2 288	
+     {mem[107],mem[106],mem[105],mem[104]} = 32'h00011463; // bne x2 x0 8	
+     {mem[111],mem[110],mem[109],mem[108]} = 32'h00000073; // ecall	
+     {mem[115],mem[114],mem[113],mem[112]} = 32'h10014a63; // blt x2 x0 276	
+     {mem[119],mem[118],mem[117],mem[116]} = 32'h10004863; // blt x0 x0 272	
+     {mem[123],mem[122],mem[121],mem[120]} = 32'h10016663; // bltu x2 x0 268	
+     {mem[127],mem[126],mem[125],mem[124]} = 32'h10006463; // bltu x0 x0 264	
+     {mem[131],mem[130],mem[129],mem[128]} = 32'h00204463; // blt x0 x2 8	
+     {mem[135],mem[134],mem[133],mem[132]} = 32'h00000073; // ecall	
+     {mem[139],mem[138],mem[137],mem[136]} = 32'h00206463; // bltu x0 x2 8	
+     {mem[143],mem[142],mem[141],mem[140]} = 32'h00000073; // ecall	
+     {mem[147],mem[146],mem[145],mem[144]} = 32'hfff00093; // addi x1 x0 -1	
+     {mem[151],mem[150],mem[149],mem[148]} = 32'h0e00e863; // bltu x1 x0 240	
+     {mem[155],mem[154],mem[153],mem[152]} = 32'h0000c463; // blt x1 x0 8	
+     {mem[159],mem[158],mem[157],mem[156]} = 32'h00000073; // ecall	
+     {mem[163],mem[162],mem[161],mem[160]} = 32'h0e205263; // bge x0 x2 228	
+     {mem[167],mem[166],mem[165],mem[164]} = 32'h0e207063; // bgeu x0 x2 224	
+     {mem[171],mem[170],mem[169],mem[168]} = 32'h00015463; // bge x2 x0 8	
+     {mem[175],mem[174],mem[173],mem[172]} = 32'h00000073; // ecall
+     {mem[179],mem[178],mem[177],mem[176]} = 32'h00017463; // bgeu x2 x0 8	
+     {mem[183],mem[182],mem[181],mem[180]} = 32'h00000073; // ecall
+     {mem[187],mem[186],mem[185],mem[184]} = 32'h0c107663; // bgeu x0 x1 204	
+     {mem[191],mem[190],mem[189],mem[188]} = 32'h00105463; // bge x0 x1 8	
+     {mem[195],mem[194],mem[193],mem[192]} = 32'h00000073; // ecall
+     {mem[199],mem[198],mem[197],mem[196]} = 32'h00005463; // bge x0 x0 8	
+     {mem[203],mem[202],mem[201],mem[200]} = 32'h00000073; // ecall
+     {mem[207],mem[206],mem[205],mem[204]} = 32'h00007463; // bgeu x0 x0 8	
+     {mem[211],mem[210],mem[209],mem[208]} = 32'h00000073; // ecall
+     {mem[215],mem[214],mem[213],mem[212]} = 32'hfff00093; // addi x1 x0 -1	
+     {mem[219],mem[218],mem[217],mem[216]} = 32'h0010a193; // slti x3 x1 1	
+     {mem[223],mem[222],mem[221],mem[220]} = 32'h0010b213; // sltiu x4 x1 1	
+     {mem[227],mem[226],mem[225],mem[224]} = 32'h00222193; // slti x3 x4 2	
+     {mem[231],mem[230],mem[229],mem[228]} = 32'h00223213; // sltiu x4 x4 2	
+     {mem[235],mem[234],mem[233],mem[232]} = 32'h0030a2b3; // slt x5 x1 x3	 
+     {mem[239],mem[238],mem[237],mem[236]} = 32'h0030b333; // sltu x6 x1 x3	
+     {mem[243],mem[242],mem[241],mem[240]} = 32'h0011a2b3; // slt x5 x3 x1	
+     {mem[247],mem[246],mem[245],mem[244]} = 32'h0011b333; // sltu x6 x3 x1	
+     {mem[251],mem[250],mem[249],mem[248]} = 32'h00200113; // addi x2 x0 2	
+     {mem[255],mem[254],mem[253],mem[252]} = 32'h00116193; // ori x3 x2 1	
+     {mem[259],mem[258],mem[257],mem[256]} = 32'h0061c213; // xori x4 x3 6	
+     {mem[263],mem[262],mem[261],mem[260]} = 32'h0061f293; // andi x5 x3 6	
+     {mem[267],mem[266],mem[265],mem[264]} = 32'h00500093; // addi x1 x0 5	 
+     {mem[271],mem[270],mem[269],mem[268]} = 32'h00209113; // slli x2 x1 2	
+     {mem[275],mem[274],mem[273],mem[272]} = 32'h00215193; // srli x3 x2 2	
+     {mem[279],mem[278],mem[277],mem[276]} = 32'h40215213; // srai x4 x2 2	
+     {mem[283],mem[282],mem[281],mem[280]} = 32'hff800293; // addi x5 x0 -8	
+     {mem[287],mem[286],mem[285],mem[284]} = 32'h4012d193; // srai x3 x5 1	
+     {mem[291],mem[290],mem[289],mem[288]} = 32'h0012d313; // srli x6 x5 1	
+     {mem[295],mem[294],mem[293],mem[292]} = 32'h00100093; // addi x1 x0 1	
+     {mem[299],mem[298],mem[297],mem[296]} = 32'h00200113; // addi x2 x0 2	
+     {mem[303],mem[302],mem[301],mem[300]} = 32'h001111b3; // sll x3 x2 x1	
+     {mem[307],mem[306],mem[305],mem[304]} = 32'h4011d233; // sra x4 x3 x1	
+     {mem[311],mem[310],mem[309],mem[308]} = 32'h4012d333; // sra x6 x5 x1	
+     {mem[315],mem[314],mem[313],mem[312]} = 32'h0012d3b3; // srl x7 x5 x1	
+     {mem[319],mem[318],mem[317],mem[316]} = 32'h00500093; // addi x1 x0 5	
+     {mem[323],mem[322],mem[321],mem[320]} = 32'hffb00113; // addi x2 x0 -5	
+     {mem[327],mem[326],mem[325],mem[324]} = 32'h002081b3; // add x3 x1 x2	
+     {mem[331],mem[330],mem[329],mem[328]} = 32'h00108233; // add x4 x1 x1	
+     {mem[335],mem[334],mem[333],mem[332]} = 32'h402082b3; // sub x5 x1 x2	
+     {mem[339],mem[338],mem[337],mem[336]} = 32'h40110333; // sub x6 x2 x1	
+     {mem[343],mem[342],mem[341],mem[340]} = 32'h402103b3; // sub x7 x2 x2	
+     {mem[347],mem[346],mem[345],mem[344]} = 32'h40108433; // sub x8 x1 x1	
+     {mem[351],mem[350],mem[349],mem[348]} = 32'h0000a083; // lw x1 0(x1)	
+     {mem[355],mem[354],mem[353],mem[352]} = 32'h001080b3; // add x1 x1 x1	
+     {mem[359],mem[358],mem[357],mem[356]} = 32'h00100093; // addi x1 x0 1	
+     {mem[363],mem[362],mem[361],mem[360]} = 32'h00200113; // addi x2 x0 2	
+     {mem[367],mem[366],mem[365],mem[364]} = 32'h00116193; // ori x3 x2 1	
+     {mem[371],mem[370],mem[369],mem[368]} = 32'h00600313; // addi x6 x0 6	
+     {mem[375],mem[374],mem[373],mem[372]} = 32'h0061c233; // xor x4 x3 x6	
+     {mem[379],mem[378],mem[377],mem[376]} = 32'h0061f2b3; // and x5 x3 x6	
+     {mem[383],mem[382],mem[381],mem[380]} = 32'h00000073; // ecall
+     {mem[387],mem[386],mem[385],mem[384]} = 32'h00010167; // jalr x2 x2 0	
+     {mem[391],mem[390],mem[389],mem[388]} = 32'h00000073; // ecall
 
-     mem[100]=8'd16; 
+     mem[100]=8'd17; 
      mem[101]=8'd0; 
      mem[102]=8'd0; 
      mem[103]=8'd0; 
-     mem[104]=8'd5;
+     mem[104]=8'd9;
      mem[105]=8'd0; 
      mem[106]=8'd0; 
      mem[107]=8'd0; 
@@ -256,36 +335,36 @@ module Memory(
    
    
    
-   // compressed instruction test case
+//   // compressed instruction test case
    
    
-  {mem[3], mem[2],mem[1], mem[0]} = 32'b0000000_00000_00000_000_00000_0110011 ;   // add  x0, x0, x0     zeroing x0
+//  {mem[3], mem[2],mem[1], mem[0]} = 32'b0000000_00000_00000_000_00000_0110011 ;   // add  x0, x0, x0     zeroing x0
    
-   {mem[5], mem[4]} = 16'b010_000_000_00_010_00;    // lw   x2, 0(x0)      loading 16 to x2
-   {mem[7], mem[6]} = 16'b010_000_000_10_011_00;    // lw   x3, 4(x0)     loading 5 in x3
+//   {mem[5], mem[4]} = 16'b010_000_000_00_010_00;    // lw   x2, 0(x0)      loading 16 to x2
+//   {mem[7], mem[6]} = 16'b010_000_000_10_011_00;    // lw   x3, 4(x0)     loading 5 in x3
    
    
-   {mem[9], mem[8]} = 16'b001_00000000110_01;    // jal  L1
-   {mem[13], mem[12],mem[11], mem[10]} = 32'b0000000_00000_00010_000_10110_1100011;    // beq  x2, x0, L2     shouldn't initially branch
-       // L1: 
-   {mem[15], mem[14]} = 16'b000_1_00010_11110_01;    // addi x2, x2, -2       should have 14 in x2
-   {mem[17], mem[16]} = 16'b100_0_00_011_00001_01;   // srli x3, x3, 1     should have 2 in x3
-   {mem[19], mem[18]} = 16'b000_0_00011_00010_10;    // slli x3, x3, 2     should have 8 in x3
-   {mem[21], mem[20]} = 16'b100_0_01_011_00001_01;    // srai x3, x3, 1        should have 4 in x3
+//   {mem[9], mem[8]} = 16'b001_00000000110_01;    // jal  L1
+//   {mem[13], mem[12],mem[11], mem[10]} = 32'b0000000_00000_00010_000_10110_1100011;    // beq  x2, x0, L2     shouldn't initially branch
+//       // L1: 
+//   {mem[15], mem[14]} = 16'b000_1_00010_11110_01;    // addi x2, x2, -2       should have 14 in x2
+//   {mem[17], mem[16]} = 16'b100_0_00_011_00001_01;   // srli x3, x3, 1     should have 2 in x3
+//   {mem[19], mem[18]} = 16'b000_0_00011_00010_10;    // slli x3, x3, 2     should have 8 in x3
+//   {mem[21], mem[20]} = 16'b100_0_01_011_00001_01;    // srai x3, x3, 1        should have 4 in x3
    
-   {mem[23], mem[22]} = 16'b100_0_11_010_00_011_01;    // sub  x2, x2, x3     should have 10 in x2
-   {mem[25], mem[24]} = 16'b100_0_10_010_00010_01;    // andi x2, x2, 2     should have 2 in x2
-   {mem[27], mem[26]} = 16'b100_0_11_010_01_010_01;    // xor  x2, x2, x2      should have 0 in x2
-   {mem[29], mem[28]} = 16'b100_1_00001_00000_10;    // jalr x1         should jump back to beq
+//   {mem[23], mem[22]} = 16'b100_0_11_010_00_011_01;    // sub  x2, x2, x3     should have 10 in x2
+//   {mem[25], mem[24]} = 16'b100_0_10_010_00010_01;    // andi x2, x2, 2     should have 2 in x2
+//   {mem[27], mem[26]} = 16'b100_0_11_010_01_010_01;    // xor  x2, x2, x2      should have 0 in x2
+//   {mem[29], mem[28]} = 16'b100_1_00001_00000_10;    // jalr x1         should jump back to beq
    
-   {mem[31], mem[30]} = 16'b000_0_00010_00101_01;    // addi x2, x2, 5       should have 5 in x2
+//   {mem[31], mem[30]} = 16'b000_0_00010_00101_01;    // addi x2, x2, 5       should have 5 in x2
    
-       // L2:
-   {mem[33], mem[32]} = 16'b100_0_11_011_10_000_01;    // or   x3, x3, x0     should have 4 in x3
-   {mem[35], mem[34]} = 16'b100_0_11_011_11_000_01;    // and  x3, x3, x0     should have 0 in x3
-   {mem[37], mem[36]} = 16'b011_0_00011_00001_01;  // lui  x3, x3, 1     should have 4096 in x3
-   {mem[39], mem[38]} = 16'b110_001_011_10_000_00;    // sw   x3, 12(x0)     should have 4096 in memory at offset 12
-   {mem[41], mem[40]} = 16'b100_1_00000_00000_10;    //ecall
+//       // L2:
+//   {mem[33], mem[32]} = 16'b100_0_11_011_10_000_01;    // or   x3, x3, x0     should have 4 in x3
+//   {mem[35], mem[34]} = 16'b100_0_11_011_11_000_01;    // and  x3, x3, x0     should have 0 in x3
+//   {mem[37], mem[36]} = 16'b011_0_00011_00001_01;  // lui  x3, x3, 1     should have 4096 in x3
+//   {mem[39], mem[38]} = 16'b110_001_011_10_000_00;    // sw   x3, 12(x0)     should have 4096 in memory at offset 12
+//   {mem[41], mem[40]} = 16'b100_1_00000_00000_10;    //ecall
    
    
    
