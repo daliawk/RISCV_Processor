@@ -259,33 +259,33 @@ module Memory(
    // compressed instruction test case
    
    
-  {mem[1], mem[0]} = 16'b100_1_00000_00000_10;   // add  x0, x0, x0     zeroing x0
+  {mem[3], mem[2],mem[1], mem[0]} = 32'b0000000_00000_00000_000_00000_0110011 ;   // add  x0, x0, x0     zeroing x0
    
-   {mem[3], mem[2]} = 16'b010_000_000_00_010_00;    // lw   x2, 0(x0)      loading 16 to x2
-   {mem[5], mem[4]} = 16'b010_000_000_10_011_00;    // lw   x3, 4(x0)     loading 5 in x3
+   {mem[5], mem[4]} = 16'b010_000_000_00_010_00;    // lw   x2, 0(x0)      loading 16 to x2
+   {mem[7], mem[6]} = 16'b010_000_000_10_011_00;    // lw   x3, 4(x0)     loading 5 in x3
    
    
-   {mem[7], mem[6]} = 16'b001_00000001000_01;    // jal  L1
-   {mem[11], mem[10],mem[9], mem[8]} = 32'b0000000_00000_00010_000_01010_1100011;    // beq  x2, x0, L2     shouldn't initially branch
+   {mem[9], mem[8]} = 16'b001_00000000110_01;    // jal  L1
+   {mem[13], mem[12],mem[11], mem[10]} = 32'b0000000_00000_00010_000_10110_1100011;    // beq  x2, x0, L2     shouldn't initially branch
        // L1: 
-   {mem[13], mem[12]} = 16'b000_1_00010_11110_01;    // addi x2, x2, -2       should have 14 in x2
-   {mem[15], mem[14]} = 16'b100_0_00_011_00001_01;   // srli x3, x3, 1     should have 2 in x3
-   {mem[17], mem[16]} = 16'b000_0_00011_00010_10;    // slli x3, x3, 2     should have 8 in x3
-   {mem[19], mem[18]} = 16'b100_0_01_011_00001_01;    // srai x3, x3, 1        should have 4 in x3
+   {mem[15], mem[14]} = 16'b000_1_00010_11110_01;    // addi x2, x2, -2       should have 14 in x2
+   {mem[17], mem[16]} = 16'b100_0_00_011_00001_01;   // srli x3, x3, 1     should have 2 in x3
+   {mem[19], mem[18]} = 16'b000_0_00011_00010_10;    // slli x3, x3, 2     should have 8 in x3
+   {mem[21], mem[20]} = 16'b100_0_01_011_00001_01;    // srai x3, x3, 1        should have 4 in x3
    
-   {mem[21], mem[20]} = 16'b100_0_11_010_00_011_01;    // sub  x2, x2, x3     should have 10 in x2
-   {mem[23], mem[22]} = 16'b100_0_10_010_00010_01;    // andi x2, x2, 2     should have 2 in x2
-   {mem[25], mem[24]} = 16'b100_0_11_010_01_010_01;    // xor  x2, x2, x2      should have 0 in x2
-   {mem[27], mem[26]} = 16'b100_1_00001_00000_10;    // jalr x1         should jump back to beq
+   {mem[23], mem[22]} = 16'b100_0_11_010_00_011_01;    // sub  x2, x2, x3     should have 10 in x2
+   {mem[25], mem[24]} = 16'b100_0_10_010_00010_01;    // andi x2, x2, 2     should have 2 in x2
+   {mem[27], mem[26]} = 16'b100_0_11_010_01_010_01;    // xor  x2, x2, x2      should have 0 in x2
+   {mem[29], mem[28]} = 16'b100_1_00001_00000_10;    // jalr x1         should jump back to beq
    
-   {mem[29], mem[28]} = 16'b000_0_00010_00101_01;    // addi x2, x2, 5       should have 5 in x2
+   {mem[31], mem[30]} = 16'b000_0_00010_00101_01;    // addi x2, x2, 5       should have 5 in x2
    
        // L2:
-   {mem[31], mem[30]} = 16'b100_0_11_011_10_000_01;    // or   x3, x3, x0     should have 4 in x3
-   {mem[33], mem[32]} = 16'b100_0_11_011_11_000_01;    // and  x3, x3, x0     should have 0 in x3
-   {mem[35], mem[34]} = 16'b011_0_00011_00001_01;  // lui  x3, x3, 1     should have 4096 in x3
-   {mem[37], mem[36]} = 16'b110_001_011_10_000_00;    // sw   x3, 12(x0)     should have 4096 in memory at offset 12
-   {mem[38], mem[38]} = 16'b100_1_00000_00000_10;    //ecall
+   {mem[33], mem[32]} = 16'b100_0_11_011_10_000_01;    // or   x3, x3, x0     should have 4 in x3
+   {mem[35], mem[34]} = 16'b100_0_11_011_11_000_01;    // and  x3, x3, x0     should have 0 in x3
+   {mem[37], mem[36]} = 16'b011_0_00011_00001_01;  // lui  x3, x3, 1     should have 4096 in x3
+   {mem[39], mem[38]} = 16'b110_001_011_10_000_00;    // sw   x3, 12(x0)     should have 4096 in memory at offset 12
+   {mem[41], mem[40]} = 16'b100_1_00000_00000_10;    //ecall
    
    
    
